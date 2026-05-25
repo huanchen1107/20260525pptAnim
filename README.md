@@ -128,5 +128,5 @@ For the new React source deck, `user/project-1/A2Z.tsx` is mapped through `user/
 Last updated on **2026.05.25** via `./ending.sh`.
 
 ### Recent Commits:
-- `2ad1f8a feat: Implement page animation rendering pipeline`
-- `6b2d667 chore: remove deleted work dir from index and update gitignore`
+- `0a38611 Finalize pipeline governance updates and helper docs`
+- `6ae5c8c feat: update slide assets and synchronize audio timestamps for the presentation`

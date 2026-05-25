@@ -49,9 +49,16 @@ echo ""
 echo "================================================="
 echo "📦 步驟 3：Git 備份推送至 GitHub"
 echo "================================================="
+
+CURRENT_BRANCH=$(git branch --show-current)
+if [ -z "$CURRENT_BRANCH" ]; then
+  CURRENT_BRANCH="master"
+fi
+
+echo "目前分支：$CURRENT_BRANCH"
 git add .
 git commit -m "Auto-commit: 結束工作階段 $(date +%Y-%m-%d)" || echo "（無新變更）"
-git push origin main || echo "⚠️ 推送失敗：請確認 git remote 設定。"
+git push origin "$CURRENT_BRANCH" || echo "⚠️ 推送失敗：請確認 git remote 設定。"
 echo ""
 echo "🎬 [Pipeline Compositions] Semantic blocks, GSAP timelines, and HyperFrames outputs synced."
 echo "✅ 完成備份與同步！下次請執行 ./startup.sh 開始新工作階段。"
