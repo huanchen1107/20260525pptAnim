@@ -24,7 +24,7 @@ for image in "$SLIDES_ROOT"/slide-[0-9]*.png; do
   fi
 
   audio="$SLIDES_ROOT/${id}-audio.mp3"
-  out="$SLIDES_ROOT/${id}-storyboard.yaml"
+  out="$SLIDES_ROOT/${id}-storyboard.yml"
 
   duration="5.00"
   if [[ -f "$audio" ]] && command -v ffprobe >/dev/null 2>&1; then

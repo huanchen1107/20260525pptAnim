@@ -24,7 +24,7 @@ This log records structural and pipeline corrections so future optimization can 
   - `slide-N.png`
   - `slide-N-audio.mp3`
   - `slide-N-caption.txt`
-  - `slide-N-storyboard.yaml`
+  - `slide-N-storyboard.yml`
   - `slide-N.html`
   - `slide-N.mp4`
   - `slide-N.preview.mp4`

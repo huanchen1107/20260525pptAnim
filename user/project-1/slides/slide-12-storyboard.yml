@@ -1,19 +1,10 @@
-duration: "21.13"
+duration: "33.93"
 fps: 30
 slide: "slide-12"
 scenes:
   - id: background_enter
     time: 0.00
-    label: "Background fade in"
-  - id: frame_enter
-    time: 0.30
-    label: "Frame / layout enter"
   - id: title_enter
     time: 0.80
-    label: "Title fade up"
-  - id: detail_enter
-    time: 1.40
-    label: "Body copy and details"
   - id: settle
     time: 2.00
-    label: "Settle state"

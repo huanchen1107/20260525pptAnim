@@ -27,7 +27,7 @@ Run:
 - `bash user/all-project-base/scripts/generate_storyboard.sh`
 
 Expected outputs:
-- `slide-N-storyboard.yaml`
+- `slide-N-storyboard.yml`
 
 ## 5) Generate HTML/layout
 Run:

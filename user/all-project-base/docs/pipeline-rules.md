@@ -17,7 +17,7 @@ For slide `N`:
 - `slide-N.png`
 - `slide-N-audio.mp3`
 - `slide-N-audio.txt`
-- `slide-N-storyboard.yaml`
+- `slide-N-storyboard.yml`
 - `slide-N.html`
 - `slide-N.mp4`
 - `slide-N.preview.mp4` (preview mode)
