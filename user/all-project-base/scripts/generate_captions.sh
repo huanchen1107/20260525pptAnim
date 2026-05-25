@@ -1,34 +1,32 @@
 #!/usr/bin/env bash
-
-# generate_captions.sh
-# Iterate over each slide-N folder under user/project-1/slides and generate a caption file
-# using OpenAI Whisper (tiny model) from the corresponding audio-N.mp3.
-
 set -euo pipefail
 
-BASE_SLIDE_DIR="$(pwd)/user/project-1/slides"
+PROJECT_ROOT="user/project-1"
+SLIDE_FILTER=""
 
-if ! command -v whisper > /dev/null; then
-  echo "Error: whisper CLI not found. Install it first (pip install -U openai-whisper)."
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --project) PROJECT_ROOT="$2"; shift 2 ;;
+    --slide) SLIDE_FILTER="$2"; shift 2 ;;
+    *) PROJECT_ROOT="$1"; shift ;;
+  esac
+done
+
+SLIDES_DIR="$PROJECT_ROOT/slides"
+
+if ! command -v whisper >/dev/null; then
+  echo "Error: whisper CLI not found." >&2
   exit 1
 fi
 
-shopt -s nullglob
-for slide_dir in "$BASE_SLIDE_DIR"/slide-*; do
-  if [[ -d "$slide_dir" ]]; then
-    # Find the audio file inside the slide folder (pattern audio-*.mp3)
-    audio_file=$(find "$slide_dir" -maxdepth 1 -type f -name 'audio-*.mp3' | head -n 1)
-    if [[ -n "$audio_file" ]]; then
-      echo "Generating caption for $audio_file ..."
-      whisper "$audio_file" --model tiny --output_dir "$slide_dir" --output_format txt > /dev/null 2>&1
-      # Whisper creates <audio_file>.txt ; rename to caption-<slide>.txt
-      base_name=$(basename "$audio_file" .mp3)
-      slide_num="${slide_dir##*/slide-}"
-      mv "$slide_dir/${base_name}.txt" "$slide_dir/caption-${slide_num}.txt" || true
-    else
-      echo "Warning: audio file not found in $slide_dir, skipping."
-    fi
-  fi
-done
+for audio in "$SLIDES_DIR"/slide-[0-9]*-audio.mp3; do
+  [[ -f "$audio" ]] || continue
+  id="$(basename "$audio" -audio.mp3)"
+  [[ "$id" =~ ^slide-[0-9]+$ ]] || continue
+  [[ -n "$SLIDE_FILTER" && "$id" != "slide-$SLIDE_FILTER" ]] && continue
 
-echo "Caption generation completed."
+  text_out="$SLIDES_DIR/${id}-audio.txt"
+  whisper "$audio" --model tiny --output_dir "$SLIDES_DIR" --output_format txt >/dev/null 2>&1 || true
+  [[ -s "$text_out" ]] || echo "# transcription unavailable" > "$text_out"
+  echo "Generated $text_out"
+done

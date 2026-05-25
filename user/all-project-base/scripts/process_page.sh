@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
-VIDEO="user/project-1/source/A2Z-original.mp4"
-START="111.2"
-END="260.48"
-PAGE="6"
-OUTDIR="$(dirname "$0")"
-# Re‑extract audio
-ffmpeg -i "$VIDEO" -ss "$START" -to "$END" -y -c:a libmp3lame -q:a 2 -vn "$OUTDIR/audio-$(basename "$OUTDIR").mp3" -loglevel error
-# Re‑render PDF page
-pdftoppm -f $PAGE -l $PAGE -png -r 300 "user/project-1/source/A2ZpdfExcalidraw.pdf" "$OUTDIR/slide-$(basename "$OUTDIR")"
-# Regenerate caption if Whisper is available
-if command -v whisper > /dev/null; then
-  whisper "$OUTDIR/audio-$(basename "$OUTDIR").mp3" --model tiny --output_dir "$OUTDIR" --output_format txt > /dev/null 2>&1
-  slide_num="${OUTDIR##*/slide-}"
-  mv "$OUTDIR/$(basename "$OUTDIR").mp3.txt" "$OUTDIR/caption-${slide_num}.txt" || true
+
+PROJECT_ROOT="user/project-1"
+SLIDE=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --project) PROJECT_ROOT="$2"; shift 2 ;;
+    --slide) SLIDE="$2"; shift 2 ;;
+    *) shift ;;
+  esac
+done
+
+if [[ -z "$SLIDE" ]]; then
+  echo "Usage: $0 --project user/project-1 --slide <N>" >&2
+  exit 1
 fi
+
+bash user/all-project-base/scripts/split_pages.sh --project "$PROJECT_ROOT" --slide "$SLIDE"
+bash user/all-project-base/scripts/convert_image_to_html.sh --project "$PROJECT_ROOT" --slide "$SLIDE"
+bash user/all-project-base/scripts/generate_storyboard.sh --project "$PROJECT_ROOT" --slide "$SLIDE" --no-prompt

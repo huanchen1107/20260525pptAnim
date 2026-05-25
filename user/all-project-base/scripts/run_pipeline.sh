@@ -28,19 +28,17 @@ fi
 
 bash ./user/all-project-base/scripts/preflight_check.sh --project "$PROJECT_ROOT"
 
-slide_args=()
 if [[ -n "$SLIDE_FILTER" ]]; then
-  slide_args=(--slide "$SLIDE_FILTER")
+  bash ./user/all-project-base/scripts/split_pages.sh --project "$PROJECT_ROOT" --slide "$SLIDE_FILTER"
+  bash ./user/all-project-base/scripts/convert_image_to_html.sh --project "$PROJECT_ROOT" --slide "$SLIDE_FILTER"
+  bash ./user/all-project-base/scripts/generate_storyboard.sh --project "$PROJECT_ROOT" --slide "$SLIDE_FILTER" --no-prompt
+  bash ./user/all-project-base/scripts/render_animation.sh --project "$PROJECT_ROOT" --renderer "$RENDERER" --mode "$PIPELINE_MODE" --slide "$SLIDE_FILTER"
+else
+  bash ./user/all-project-base/scripts/split_pages.sh --project "$PROJECT_ROOT"
+  bash ./user/all-project-base/scripts/convert_image_to_html.sh --project "$PROJECT_ROOT"
+  bash ./user/all-project-base/scripts/generate_storyboard.sh --project "$PROJECT_ROOT" --no-prompt
+  bash ./user/all-project-base/scripts/render_animation.sh --project "$PROJECT_ROOT" --renderer "$RENDERER" --mode "$PIPELINE_MODE"
 fi
-
-# 1) Split source into per-slide assets and transcribe to slide-N-audio.txt via Whisper
-bash ./user/all-project-base/scripts/split_pages.sh --project "$PROJECT_ROOT" "${slide_args[@]}"
-# 2) Build per-slide HTML
-bash ./user/all-project-base/scripts/convert_image_to_html.sh --project "$PROJECT_ROOT" "${slide_args[@]}"
-# 3) Build per-slide storyboard
-bash ./user/all-project-base/scripts/generate_storyboard.sh --project "$PROJECT_ROOT" "${slide_args[@]}" --no-prompt
-# 4) Render
-bash ./user/all-project-base/scripts/render_animation.sh --project "$PROJECT_ROOT" --renderer "$RENDERER" --mode "$PIPELINE_MODE" "${slide_args[@]}"
 
 if [[ "$PIPELINE_MODE" != "preview" && -z "$SLIDE_FILTER" ]]; then
   bash ./user/all-project-base/scripts/combine_videos.sh --project "$PROJECT_ROOT"
