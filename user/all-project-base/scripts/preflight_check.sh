@@ -54,3 +54,9 @@ if [[ "$legacy_audio_count" != "0" || "$legacy_caption_count" != "0" ]]; then
 fi
 
 echo "[preflight] OK: $PROJECT_ROOT (video=$video_count, pdf=$pdf_count, tsx=$tsx_count)"
+
+# Post-split validation (optional warning before generation)
+missing_audio_txt=$(find "$SLIDES_DIR" -maxdepth 1 -type f -name "slide-[0-9]*.png" | sed -E "s/\.png$/-audio.txt/" | while read -r t; do [[ -f "$t" ]] || echo "$t"; done | wc -l | tr -d " ")
+if [[ "${missing_audio_txt:-0}" != "0" ]]; then
+  warn "Some slides currently miss *-audio.txt (expected after split_pages.sh + Whisper)."
+fi

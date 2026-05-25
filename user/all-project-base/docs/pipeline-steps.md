@@ -11,14 +11,14 @@ Create (or confirm) these folders:
 Place project inputs in:
 - `user/<project-name>/source/`
 
-## 3) Split source to flat slide assets
+## 3) Split source to flat slide assets (required)
 Run:
 - `bash user/all-project-base/scripts/split_pages.sh`
 
 Expected outputs in `user/<project-name>/slides/`:
 - `slide-N.png`
 - `slide-N-audio.mp3`
-- `slide-N-audio.txt`
+- `slide-N-audio.txt` (Whisper transcription; required downstream)
 - `timestamps.json`
 - `slide-metadata.yaml`
 
@@ -62,3 +62,10 @@ Expected output:
 
 ## Corrections History
 - See  for structural fixes and rationale.
+
+
+## 9) Validate canonical artifacts
+Run:
+- `bash user/all-project-base/scripts/validate_slide_artifacts.sh --project user/<project-name>`
+
+This verifies per-slide canonical files exist: `png`, `audio.mp3`, `audio.txt`, `html`, `storyboard.yml`.
