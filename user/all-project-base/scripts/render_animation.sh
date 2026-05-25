@@ -22,6 +22,7 @@ INPUT_PATH="$PROJECT_ROOT/slides"
 for html in "$INPUT_PATH"/slide-[0-9]*.html; do
   [[ -f "$html" ]] || continue
   slide_id="$(basename "$html" .html)"
+  [[ "$slide_id" =~ ^slide-[0-9]+$ ]] || continue
   [[ -n "$SLIDE_FILTER" && "$slide_id" != "slide-$SLIDE_FILTER" ]] && continue
 
   out="$INPUT_PATH/${slide_id}.mp4"

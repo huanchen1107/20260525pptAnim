@@ -19,6 +19,7 @@ SLIDES_DIR="$PROJECT_ROOT/slides"
 for image_file in "$SLIDES_DIR"/slide-[0-9]*.png; do
   [[ -f "$image_file" ]] || continue
   slide_name="$(basename "$image_file" .png)"
+  [[ "$slide_name" =~ ^slide-[0-9]+$ ]] || continue
   [[ -n "$SLIDE_FILTER" && "$slide_name" != "slide-$SLIDE_FILTER" ]] && continue
 
   audio_text_file="$SLIDES_DIR/${slide_name}-audio.txt"
@@ -51,10 +52,21 @@ for image_file in "$SLIDES_DIR"/slide-[0-9]*.png; do
   fi
 
   if [[ -f "$custom_html_file" ]]; then
-    cp "$custom_html_file" "$html_file"
+    if rg -qi '<html|<!doctype' "$custom_html_file"; then
+      cp "$custom_html_file" "$html_file"
+    else
+      {
+        echo '<!DOCTYPE html>'
+        echo '<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+        echo '<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22/%3E">'
+        echo "<title>${slide_name}</title></head><body>"
+        cat "$custom_html_file"
+        echo '</body></html>'
+      } > "$html_file"
+    fi
   else
     cat > "$html_file" <<HTML
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;background:#111;color:#fff;font-family:Arial,sans-serif} .wrap{width:1920px;height:1080px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px} img{max-width:90%;max-height:70%;object-fit:contain;border:2px solid #333} h1{font-size:56px;margin:0}</style></head><body><div class="wrap"><h1>${caption}</h1><img src="./${slide_name}.png" alt="${slide_name}"></div></body></html>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22/%3E"><style>html,body{margin:0;background:#111;color:#fff;font-family:Arial,sans-serif} .wrap{width:1920px;height:1080px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px} img{max-width:90%;max-height:70%;object-fit:contain;border:2px solid #333} h1{font-size:56px;margin:0}</style></head><body><div class="wrap"><h1>${caption}</h1><img src="./${slide_name}.png" alt="${slide_name}"></div></body></html>
 HTML
   fi
 

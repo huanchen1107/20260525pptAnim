@@ -46,11 +46,17 @@ for ((i=1;i<=PAGE_COUNT;i++)); do
 
   pdftoppm -f "$i" -l "$i" -png -r 300 -singlefile "$PDF" "$SLIDES_DIR/${slide_id}"
   ffmpeg -y -i "$AUDIO_SRC" -ss "$start" -to "$end" -c:a libmp3lame -q:a 2 "$SLIDES_DIR/${slide_id}-audio.mp3" -loglevel error
+
+  text_out="$SLIDES_DIR/${slide_id}-audio.txt"
   if command -v whisper >/dev/null; then
     whisper "$SLIDES_DIR/${slide_id}-audio.mp3" --model tiny --output_dir "$SLIDES_DIR" --output_format txt >/dev/null 2>&1 || true
-    mv "$SLIDES_DIR/${slide_id}-audio.mp3.txt" "$SLIDES_DIR/${slide_id}-audio.txt" 2>/dev/null || echo "# caption placeholder" > "$SLIDES_DIR/${slide_id}-audio.txt"
+    if [[ -s "$text_out" ]]; then
+      :
+    else
+      printf 'Slide %s narration segment (%.2fs-%.2fs).\n' "$i" "$start" "$end" > "$text_out"
+    fi
   else
-    echo "# caption placeholder" > "$SLIDES_DIR/${slide_id}-audio.txt"
+    printf 'Slide %s narration segment (%.2fs-%.2fs).\n' "$i" "$start" "$end" > "$text_out"
   fi
 
   printf '{"page":%d,"start":%s,"end":%s},' "$i" "$start" "$end" >> "$SLIDES_DIR/timestamps.json"
