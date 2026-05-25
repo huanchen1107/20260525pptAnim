@@ -79,11 +79,11 @@ Do not jump from screenshot to final video. Always keep the intermediate YAML an
 
 ## Runtime Entry Points
 
-- `./user/assets/run_pipeline.sh` runs conversion, storyboard YAML generation, animation rendering, and master video assembly.
-- `./user/assets/run_pipeline.sh --mode preview` runs the same pipeline but writes smaller preview MP4s to `user/assets/slides/<slide>/preview/`.
-- `./user/assets/run_pipeline.sh --mode auto user/assets/slides/slide-1` runs a single preview pass for a slide using the full-resolution source image.
-- `./user/assets/render_animation.sh` renders each slide scene to `user/assets/slides/<slide>/` using the slide directory basename, for example `slide-1.mp4`.
-- `./user/assets/combine_videos.sh` assembles `user/assets/presentation-master.mp4` with audio.
+- `./user/all-project-base/scripts/run_pipeline.sh` runs conversion, storyboard YAML generation, animation rendering, and master video assembly.
+- `./user/all-project-base/scripts/run_pipeline.sh --mode preview` runs the same pipeline but writes smaller preview MP4s to `user/project-1/slides/<slide>/preview/`.
+- `./user/all-project-base/scripts/run_pipeline.sh --mode auto user/project-1/slides/slide-1` runs a single preview pass for a slide using the full-resolution source image.
+- `./user/all-project-base/scripts/render_animation.sh` renders each slide scene to `user/project-1/slides/<slide>/` using the slide directory basename, for example `slide-1.mp4`.
+- `./user/all-project-base/scripts/combine_videos.sh` assembles `user/project-1/presentation-master.mp4` with audio.
 
 ## Slide-1 From Scratch (Suggested Step Order)
 
@@ -93,12 +93,12 @@ When supervising interactively, use this order before any MP4 render:
 2. Derive `scene/index.html` (from `A2Z.tsx` page 1, or from layout JSON → HTML)
 3. Add `scene/style.css` (theme + typography)
 4. Add `scene/animation.js` (GSAP timeline + HyperFrames contract)
-5. Render: `./user/assets/render_animation.sh user/assets/slides/slide-1`
+5. Render: `./user/all-project-base/scripts/render_animation.sh user/project-1/slides/slide-1`
 6. QA: compare MP4 vs source slide, iterate
 
 ## A2Z Source Deck
 
-When the source is `user/assets/A2Z.tsx`, use `user/assets/A2Z.pipeline.yaml` as the page map for the deck:
+When the source is `user/project-1/A2Z.tsx`, use `user/project-1/A2Z.pipeline.yaml` as the page map for the deck:
 
 - page 1 through 13 are treated as distinct slide sources
 - each page flows through the same analysis → storyboard → GSAP → HyperFrames chain
@@ -107,8 +107,8 @@ When the source is `user/assets/A2Z.tsx`, use `user/assets/A2Z.pipeline.yaml` as
 
 ## A2Z File Contract
 
-- `user/assets/A2Z.tsx`: authored React deck and page logic
-- `user/assets/A2Z.pipeline.yaml`: generated page manifest and skill map
+- `user/project-1/A2Z.tsx`: authored React deck and page logic
+- `user/project-1/A2Z.pipeline.yaml`: generated page manifest and skill map
 - `analysis/visual_analysis.yaml`: page-level visual read
 - `analysis/layout_plan.yaml`: repeated-template geometry plan
 - `analysis/semantic_blocks.yaml`: editable block tree
@@ -117,7 +117,7 @@ When the source is `user/assets/A2Z.tsx`, use `user/assets/A2Z.pipeline.yaml` as
 - `scene/index.html`: rebuilt HTML scene
 - `scene/style.css`: scene styling
 - `scene/animation.js`: GSAP timeline and seek contract
-- `user/assets/slides/slide-N/*.mp4`: rendered page outputs
+- `user/project-1/slides/slide-N/*.mp4`: rendered page outputs
 
 ## Legacy Compatibility
 

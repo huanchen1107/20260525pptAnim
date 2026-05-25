@@ -32,21 +32,21 @@ This project turns a slide image or PPT page into an editable animated scene, th
 One-command pipeline:
 
 ```bash
-./user/assets/run_pipeline.sh
+./user/all-project-base/scripts/run_pipeline.sh
 ```
 
-MP4 outputs are written next to each slide using the slide directory name, for example `user/assets/slides/slide-1/slide-1.mp4`.
+MP4 outputs are written next to each slide using the slide directory name, for example `user/project-1/slides/slide-1/slide-1.mp4`.
 For tuning, run the same pipeline in preview mode:
 
 ```bash
-./user/assets/run_pipeline.sh --mode preview
+./user/all-project-base/scripts/run_pipeline.sh --mode preview
 ```
 
-Preview renders are smaller and land in `user/assets/slides/<slide>/preview/` as `*.preview.mp4`.
+Preview renders are smaller and land in `user/project-1/slides/<slide>/preview/` as `*.preview.mp4`.
 For a single-slide preview pass, run:
 
 ```bash
-./user/assets/run_pipeline.sh --mode auto user/assets/slides/slide-1
+./user/all-project-base/scripts/run_pipeline.sh --mode auto user/project-1/slides/slide-1
 ```
 
 Auto mode now runs a single preview pass with the full-resolution source image and skips the old comparison loop.
@@ -89,7 +89,7 @@ Recommended pattern:
 
 ### 6. Render To MP4
 
-Use HyperFrames to render the HTML scene into a video file such as `user/assets/slides/slide-1/slide-1.mp4`.
+Use HyperFrames to render the HTML scene into a video file such as `user/project-1/slides/slide-1/slide-1.mp4`.
 
 ### 7. QA Review
 
@@ -101,8 +101,8 @@ Why: The pipeline now keeps the source image at full size, so layout refinement 
 
 The most important files are:
 
-- `user/assets/slides/slide-N/scene_layout.json`
-- `user/assets/slides/slide-N/custom-html.html`
+- `user/project-1/slides/slide-N/scene_layout.json`
+- `user/project-1/slides/slide-N/custom-html.html`
 - `scene/index.html`
 - `scene/style.css`
 - `scene/animation.js`
@@ -121,7 +121,7 @@ The repo’s local skill pack matches the tutorial:
 - `visual-qa-checker` reviews render quality and layout drift
 - `ppt-template-matcher` reuses a stable layout family for repeated PPT slides
 
-For the new React source deck, `user/assets/A2Z.tsx` is mapped through `user/assets/A2Z.pipeline.yaml` before the GSAP and HyperFrames stages.
+For the new React source deck, `user/project-1/A2Z.tsx` is mapped through `user/project-1/A2Z.pipeline.yaml` before the GSAP and HyperFrames stages.
 
 ## 📍 Latest Status
 

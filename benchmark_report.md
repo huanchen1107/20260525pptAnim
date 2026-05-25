@@ -1,7 +1,7 @@
 # Benchmark Report
 \n## Environment
 - Date: Sat May 23 22:32:09 CST 2026
-- Sample directory: user/assets/sample_images
+- Sample directory: user/project-1/sample_images
 \n## Results
 | Image | Tool | Time (s) | Size (bytes) |
 |------|------|----------|--------------|
