@@ -64,3 +64,26 @@ Run from repo root with project path passed as argument when supported.
 
 ## Change History
 - See  to track applied corrections before further optimization.
+
+
+## Dynamic Object Control Rule
+- Storyboard files (`slide-N-storyboard.yml`) are not sufficient by themselves.
+- Pipeline must include a storyboard-consumption step that maps storyboard object actions to DOM elements (by stable object IDs) during rendering.
+- Effects such as `zoom in`, `zoom out`, `pan`, `show up`, `emphasize`, and similar motion must be implemented in this consumption step.
+- If this step is skipped, render output is considered static/fallback mode, not full dynamic mode.
+
+
+## Storyboard Mapper Rule
+- `generate_storyboard.sh` must generate content-driven object timelines, not fixed generic timings.
+- Storyboard generation must use:
+  - `slide-N-audio.txt` for semantic intent detection,
+  - `slide-N-scene_layout.json` for object ID targeting when available.
+- Action mapping should include dynamic controls such as `zoom_in`, `zoom_out`, `pan`, `fade_in`, `emphasize` (or equivalent runtime actions).
+- Storyboard output must enforce at least one animation event every 5 seconds for non-static pacing.
+- Canonical output file remains `slide-N-storyboard.yml`.
+
+
+## HyperFrames Recovery Rule
+- When HyperFrames environment/version is inconsistent, use:
+  - `user/all-project-base/scripts/setup_hyperframes_and_run.sh`
+- This script is the standard recovery entrypoint for install+version check+run in one flow.

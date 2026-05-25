@@ -1,10 +1,55 @@
+slide: "slide-2"
 duration: "33.93"
 fps: 30
-slide: "slide-2"
+caption: "我們首先要面對一個殘酷的問題"
 scenes:
-  - id: background_enter
-    time: 0.00
-  - id: title_enter
-    time: 0.80
-  - id: settle
-    time: 2.00
+  - id: intro
+    start: 0.00
+    end: 1.20
+  - id: content
+    start: 1.20
+    end: 4.20
+  - id: outro
+    start: 4.20
+    end: 33.93
+objects:
+  - id: title
+    at: 0.60
+    action: fade_in
+    duration: 0.60
+    intent: intro_reveal
+  - id: subtitle
+    at: 1.50
+    action: draw_in
+    duration: 0.60
+    intent: step_reveal
+  - id: progress_fill
+    at: 2.40
+    action: pulse
+    duration: 0.60
+    intent: emphasize
+  - id: global
+    at: 10.00
+    action: micro_emphasis
+    duration: 0.40
+    intent: pacing_guard
+  - id: global
+    at: 15.00
+    action: micro_emphasis
+    duration: 0.40
+    intent: pacing_guard
+  - id: global
+    at: 20.00
+    action: micro_emphasis
+    duration: 0.40
+    intent: pacing_guard
+  - id: global
+    at: 25.00
+    action: micro_emphasis
+    duration: 0.40
+    intent: pacing_guard
+  - id: global
+    at: 30.00
+    action: micro_emphasis
+    duration: 0.40
+    intent: pacing_guard

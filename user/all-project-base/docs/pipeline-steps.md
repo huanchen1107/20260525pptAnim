@@ -69,3 +69,20 @@ Run:
 - `bash user/all-project-base/scripts/validate_slide_artifacts.sh --project user/<project-name>`
 
 This verifies per-slide canonical files exist: `png`, `audio.mp3`, `audio.txt`, `html`, `storyboard.yml`.
+
+
+## 10) Storyboard-to-Animation Application (Required for Dynamic Motion)
+- `generate_storyboard.sh` defines object-level intent (`zoom_in`, `zoom_out`, `pan`, `fade_in`, `emphasize`, etc.).
+- A renderer adapter step must apply storyboard actions to HTML object IDs at runtime (HyperFrames path).
+- Without this adapter, outputs are static even if storyboard files exist (for example `--renderer ffmpeg`).
+- Dynamic object control is validated only when storyboard actions are consumed during render.
+
+
+## HyperFrames Setup Helper (When Needed)
+If local HyperFrames version/setup is uncertain, use:
+- `bash user/all-project-base/scripts/setup_hyperframes_and_run.sh --project user/project-1 --slide 1 --mode auto --renderer hyperframes`
+
+This helper performs:
+1. Install/pin `hyperframes@0.6.40`
+2. Verify local HyperFrames version
+3. Run pipeline with provided arguments

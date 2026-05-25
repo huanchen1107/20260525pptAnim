@@ -16,6 +16,102 @@ done
 
 SLIDES_ROOT="$PROJECT_ROOT/slides"
 
+python_mapper='import json, re, sys
+layout_path, caption, duration_s = sys.argv[1], sys.argv[2], float(sys.argv[3])
+caption_l = caption.lower()
+
+# intent mapping from transcript semantics
+intent_patterns = [
+    (r"zoom in|focus|emphas|highlight|關鍵|重點", "zoom_in"),
+    (r"zoom out|overview|summary|總結|全局", "zoom_out"),
+    (r"pan|shift|move to|轉到|移動", "pan"),
+    (r"compare|versus|vs|對比|比較", "compare_reveal"),
+    (r"step|first|second|then|流程|步驟", "step_reveal"),
+    (r"introduc|welcome|start|開始|歡迎", "intro_reveal"),
+]
+
+def detect_intents(text):
+    intents=[]
+    for pat, name in intent_patterns:
+        if re.search(pat, text):
+            intents.append(name)
+    if not intents:
+        intents=["intro_reveal","step_reveal","emphasize"]
+    return intents
+
+try:
+    with open(layout_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+except Exception:
+    data = {}
+
+objs = data.get("objects", []) if isinstance(data, dict) else []
+if not isinstance(objs, list):
+    objs = []
+
+ids=[]
+for obj in objs:
+    oid = obj.get("id") or obj.get("name") or obj.get("type")
+    if oid and str(oid).strip():
+        ids.append(str(oid).strip())
+
+if not ids:
+    ids = ["title","subtitle","progress_fill"]
+
+# Prefer semantic ids if present
+priority = ["title","subtitle","progress","progress_fill","note","status","frame"]
+ranked=[]
+for p in priority:
+    for oid in ids:
+        if p in oid.lower() and oid not in ranked:
+            ranked.append(oid)
+for oid in ids:
+    if oid not in ranked:
+        ranked.append(oid)
+ids = ranked[:10]
+
+intents = detect_intents(caption_l)
+
+# map intent -> action set
+intent_actions = {
+    "intro_reveal": ["fade_in","slide_in_up"],
+    "step_reveal": ["fade_up","draw_in"],
+    "emphasize": ["pulse","highlight"],
+    "zoom_in": ["zoom_in"],
+    "zoom_out": ["zoom_out"],
+    "pan": ["pan_x"],
+    "compare_reveal": ["split_reveal","swap_focus"],
+}
+
+actions=[]
+t=0.6
+min_gap=0.9
+for i, oid in enumerate(ids):
+    intent = intents[i % len(intents)]
+    act_list = intent_actions.get(intent, ["fade_in"])
+    act = act_list[i % len(act_list)]
+    dur = 0.6 if act not in ("zoom_in","zoom_out","pan_x") else 1.2
+    actions.append((oid, t, act, dur, intent))
+    t += min_gap
+
+# ensure at least one event every 5 seconds (05/06 requirement)
+last = actions[-1][1] if actions else 0.0
+cp = 5.0
+while cp < duration_s:
+    if cp - last >= 4.5:
+        actions.append(("global", cp, "micro_emphasis", 0.4, "pacing_guard"))
+        last = cp
+    cp += 5.0
+
+# print yaml snippet
+for oid, at, act, dur, intent in actions:
+    print(f"  - id: {oid}")
+    print(f"    at: {at:.2f}")
+    print(f"    action: {act}")
+    print(f"    duration: {dur:.2f}")
+    print(f"    intent: {intent}")
+'
+
 for image in "$SLIDES_ROOT"/slide-[0-9]*.png; do
   [[ -f "$image" ]] || continue
   id="$(basename "$image" .png)"
@@ -43,51 +139,13 @@ for image in "$SLIDES_ROOT"/slide-[0-9]*.png; do
   [[ -f "$text_file" ]] && caption="$(tr -d '\r' < "$text_file" | sed '/^[[:space:]]*$/d' | head -n 1)"
   caption_safe="${caption//\"/}"
 
-  object_yaml=""
-  if [[ -f "$layout_json" ]]; then
-    object_yaml="$(python3 - "$layout_json" "$duration" <<'PY'
-import json, sys
-path = sys.argv[1]
-duration = float(sys.argv[2])
-with open(path, 'r', encoding='utf-8') as f:
-    data = json.load(f)
-objects = data.get('objects', []) if isinstance(data, dict) else []
-if not isinstance(objects, list):
-    objects = []
-core = []
-for obj in objects[:8]:
-    oid = obj.get('id') or obj.get('name') or obj.get('type') or 'object'
-    core.append(str(oid).replace('\n',' ').strip())
-if not core:
-    core = ['title','subtitle','progress_fill']
-step = max(0.8, min(5.0, duration / max(1, len(core))))
-t = 0.6
-actions = ['fade_in', 'fade_up', 'draw_in', 'slide_in_left', 'slide_in_right', 'pulse']
-for i, oid in enumerate(core):
-    action = actions[i % len(actions)]
-    d = 0.45 if action != 'pulse' else 0.8
-    print(f'  - id: {oid}\n    at: {t:.2f}\n    action: {action}\n    duration: {d:.2f}')
-    t += step
-if duration > 5.0:
-    checkpoints = int(duration // 5)
-    for c in range(1, checkpoints + 1):
-      at = min(duration - 0.5, c * 5.0)
-      print(f'  - id: global\n    at: {at:.2f}\n    action: micro_emphasis\n    duration: 0.40')
-PY
-)"
-  else
+  object_yaml="$(python3 -c "$python_mapper" "$layout_json" "$caption_safe" "$duration" 2>/dev/null || true)"
+  if [[ -z "$object_yaml" ]]; then
     object_yaml="  - id: title
     at: 0.80
     action: fade_in
     duration: 0.50
-  - id: subtitle
-    at: 1.40
-    action: fade_up
-    duration: 0.50
-  - id: progress_fill
-    at: 2.00
-    action: scale_x
-    duration: 2.50"
+    intent: fallback"
   fi
 
   cat > "$out" <<YML

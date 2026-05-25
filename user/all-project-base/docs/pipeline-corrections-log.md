@@ -90,3 +90,18 @@ This log records structural and pipeline corrections so future optimization can 
 - MP3 per-slide files are derived artifacts extracted from video.
 - Page images are derived artifacts extracted from PDF.
 - `A2Z.tsx` is treated as the source HTML/page logic representation.
+
+
+## 2026-05-25: Content-Driven Storyboard Mapper
+
+### Decision
+- Replaced fixed storyboard timing generation with content-driven mapping logic.
+
+### Implementation
+- `generate_storyboard.sh` now derives animation intent from `slide-N-audio.txt`.
+- `generate_storyboard.sh` targets object IDs from `slide-N-scene_layout.json` when available.
+- Storyboards now include intent-tagged actions (`zoom_in`, `zoom_out`, `pan_x`, `fade_in`, `pulse`, etc.).
+- Added pacing guard to ensure at least one event every 5 seconds.
+
+### Contract
+- This mapping behavior is part of the default pipeline standard and must be preserved in future refactors.

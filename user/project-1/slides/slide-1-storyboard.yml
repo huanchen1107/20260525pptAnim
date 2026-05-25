@@ -14,14 +14,42 @@ scenes:
     end: 33.93
 objects:
   - id: title
-    at: 0.80
+    at: 0.60
     action: fade_in
-    duration: 0.50
+    duration: 0.60
+    intent: intro_reveal
   - id: subtitle
-    at: 1.40
-    action: fade_up
-    duration: 0.50
+    at: 1.50
+    action: slide_in_up
+    duration: 0.60
+    intent: intro_reveal
   - id: progress_fill
-    at: 2.00
-    action: scale_x
-    duration: 2.50
+    at: 2.40
+    action: fade_in
+    duration: 0.60
+    intent: intro_reveal
+  - id: global
+    at: 10.00
+    action: micro_emphasis
+    duration: 0.40
+    intent: pacing_guard
+  - id: global
+    at: 15.00
+    action: micro_emphasis
+    duration: 0.40
+    intent: pacing_guard
+  - id: global
+    at: 20.00
+    action: micro_emphasis
+    duration: 0.40
+    intent: pacing_guard
+  - id: global
+    at: 25.00
+    action: micro_emphasis
+    duration: 0.40
+    intent: pacing_guard
+  - id: global
+    at: 30.00
+    action: micro_emphasis
+    duration: 0.40
+    intent: pacing_guard
