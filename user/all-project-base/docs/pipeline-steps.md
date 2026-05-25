@@ -18,7 +18,7 @@ Run:
 Expected outputs in `user/<project-name>/slides/`:
 - `slide-N.png`
 - `slide-N-audio.mp3`
-- `slide-N-caption.txt`
+- `slide-N-audio.txt`
 - `timestamps.json`
 - `slide-metadata.yaml`
 
@@ -59,3 +59,6 @@ Expected output:
 - Keep all slide artifacts as flat files in `slides/`.
 - Keep shared scripts in `user/all-project-base/scripts/`.
 - Keep shared Python utilities in `user/all-project-base/utils/`.
+
+## Corrections History
+- See  for structural fixes and rationale.

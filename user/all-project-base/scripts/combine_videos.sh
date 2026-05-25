@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SLIDES_ROOT="user/project-1/slides"
-OUTPUT_VIDEO="user/project-1/presentation-master.mp4"
+PROJECT_ROOT="user/project-1"
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --project) PROJECT_ROOT="$2"; shift 2 ;;
+    *) PROJECT_ROOT="$1"; shift ;;
+  esac
+done
+
+SLIDES_ROOT="$PROJECT_ROOT/slides"
+OUTPUT_VIDEO="$PROJECT_ROOT/outputs/presentation-master.mp4"
 WORK_DIR="/private/tmp/pipeline-combine"
 INPUTS_FILE="$WORK_DIR/inputs.txt"
-
-rm -rf "$WORK_DIR"
-mkdir -p "$WORK_DIR"
+mkdir -p "$PROJECT_ROOT/outputs"
+rm -rf "$WORK_DIR" && mkdir -p "$WORK_DIR"
 : > "$INPUTS_FILE"
 
-for mp4 in $(find "$SLIDES_ROOT" -maxdepth 1 -type f -name 'slide-*.mp4' ! -name '*.preview.mp4' | sort -V); do
+find "$SLIDES_ROOT" -maxdepth 1 -type f -name 'slide-[0-9]*.mp4' ! -name '*.preview.mp4' | sort -V | while read -r mp4; do
   echo "file '$(pwd)/$mp4'" >> "$INPUTS_FILE"
 done
 

@@ -1,0 +1,10 @@
+duration: "5.00"
+fps: 30
+slide: "slide-7-slide-7-07"
+scenes:
+  - id: background_enter
+    time: 0.00
+  - id: title_enter
+    time: 0.80
+  - id: settle
+    time: 2.00

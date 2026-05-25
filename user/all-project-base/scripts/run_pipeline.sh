@@ -1,11 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SLIDES_ROOT="user/project-1/slides"
+PROJECT_ROOT="user/project-1"
 PIPELINE_MODE="final"
+SLIDE_FILTER=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --project)
+      PROJECT_ROOT="${2:-user/project-1}"
+      shift 2
+      ;;
+    --slide)
+      SLIDE_FILTER="${2:-}"
+      shift 2
+      ;;
     --mode)
       PIPELINE_MODE="${2:-final}"
       shift 2
@@ -15,7 +24,7 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     *)
-      SLIDES_ROOT="$1"
+      PROJECT_ROOT="$1"
       shift
       ;;
   esac
@@ -23,15 +32,26 @@ done
 
 if [[ "$PIPELINE_MODE" == "auto" ]]; then
   PIPELINE_MODE="preview"
-  echo "[auto] Running a single preview pass for $SLIDES_ROOT"
+  if [[ -n "$SLIDE_FILTER" ]]; then
+    echo "[auto] Running single-slide preview for ${PROJECT_ROOT} slide-${SLIDE_FILTER}"
+  else
+    echo "[auto] Running project preview for ${PROJECT_ROOT}"
+  fi
 fi
 
-./user/all-project-base/scripts/convert_image_to_html.sh "$SLIDES_ROOT"
-./user/all-project-base/scripts/generate_storyboard.sh "$SLIDES_ROOT"
-./user/all-project-base/scripts/render_animation.sh --mode "$PIPELINE_MODE" "$SLIDES_ROOT"
+bash ./user/all-project-base/scripts/preflight_check.sh --project "$PROJECT_ROOT"
 
-if [[ "$PIPELINE_MODE" != "preview" && "$(basename "$SLIDES_ROOT")" != slide-* ]]; then
-  ./user/all-project-base/scripts/combine_videos.sh
+slide_args=()
+if [[ -n "$SLIDE_FILTER" ]]; then
+  slide_args=(--slide "$SLIDE_FILTER")
 fi
 
-echo "Pipeline complete for $SLIDES_ROOT ($PIPELINE_MODE mode)"
+bash ./user/all-project-base/scripts/convert_image_to_html.sh --project "$PROJECT_ROOT" "${slide_args[@]}"
+bash ./user/all-project-base/scripts/generate_storyboard.sh --project "$PROJECT_ROOT" "${slide_args[@]}"
+bash ./user/all-project-base/scripts/render_animation.sh --project "$PROJECT_ROOT" --mode "$PIPELINE_MODE" "${slide_args[@]}"
+
+if [[ "$PIPELINE_MODE" != "preview" && -z "$SLIDE_FILTER" ]]; then
+  bash ./user/all-project-base/scripts/combine_videos.sh --project "$PROJECT_ROOT"
+fi
+
+echo "Pipeline complete for $PROJECT_ROOT ($PIPELINE_MODE mode)"

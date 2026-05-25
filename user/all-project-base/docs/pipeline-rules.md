@@ -16,7 +16,7 @@ Shared base:
 For slide `N`:
 - `slide-N.png`
 - `slide-N-audio.mp3`
-- `slide-N-caption.txt`
+- `slide-N-audio.txt`
 - `slide-N-storyboard.yaml`
 - `slide-N.html`
 - `slide-N.mp4`
@@ -61,3 +61,6 @@ Run from repo root with project path passed as argument when supported.
 - Individual projects (for example `user/project-1/`) must consume shared logic and must not fork or duplicate core pipeline scripts/utilities unless explicitly approved.
 - Project folders should contain project-specific inputs, generated artifacts, outputs, and local docs only.
 - When updating pipeline behavior, update shared files in `all-project-base` first, then verify downstream projects.
+
+## Change History
+- See  to track applied corrections before further optimization.
