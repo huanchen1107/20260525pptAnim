@@ -1,0 +1,25 @@
+slides:
+  - page: 1
+    png: slides/slide-1/slide-1.png
+    audio: slides/slide-1/audio-1.mp3
+    caption: slides/slide-1/caption-1.txt
+  - page: 2
+    png: slides/slide-2/slide-2.png
+    audio: slides/slide-2/audio-2.mp3
+    caption: slides/slide-2/caption-2.txt
+  - page: 3
+    png: slides/slide-3/slide-3.png
+    audio: slides/slide-3/audio-3.mp3
+    caption: slides/slide-3/caption-3.txt
+  - page: 4
+    png: slides/slide-4/slide-4.png
+    audio: slides/slide-4/audio-4.mp3
+    caption: slides/slide-4/caption-4.txt
+  - page: 5
+    png: slides/slide-5/slide-5.png
+    audio: slides/slide-5/audio-5.mp3
+    caption: slides/slide-5/caption-5.txt
+  - page: 6
+    png: slides/slide-6/slide-6.png
+    audio: slides/slide-6/audio-6.mp3
+    caption: slides/slide-6/caption-6.txt

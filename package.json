@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "hyperframes": "^0.6.38",
+    "gsap": "^3.12.5"
+  }
+}

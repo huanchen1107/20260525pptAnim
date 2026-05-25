@@ -1,0 +1,21 @@
+name: Convert Images to HTML
+on:
+  push:
+    paths:
+      - "user/assets/slides/**"
+      - "user/assets/convert_image_to_html.sh"
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm ci
+      - name: Make script executable
+        run: chmod +x user/assets/convert_image_to_html.sh
+      - name: Run conversion script
+        run: ./user/assets/convert_image_to_html.sh

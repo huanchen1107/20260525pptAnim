@@ -1,0 +1,51 @@
+semantic_blocks:
+  root:
+    id: slide
+    tag: section
+    class: slide
+    children:
+      - id: grid_background
+        tag: div
+        class: grid-background
+        role: background
+        z_index: 0
+      - id: main_frame
+        tag: main
+        class: main-frame
+        role: central_container
+        z_index: 10
+        children:
+          - id: frame_label
+            tag: div
+            class: frame-label
+            editable: true
+          - id: title
+            tag: h1
+            class: title
+            editable: true
+            text: "這是整篇論文的鉤子"
+          - id: divider
+            tag: div
+            class: divider
+          - id: subtitle
+            tag: h2
+            class: subtitle
+            editable: true
+            text: "slide-6"
+          - id: note_box
+            tag: aside
+            class: note-box
+            editable: true
+          - id: progress_bar
+            tag: div
+            class: progress-bar
+            children:
+              - id: progress_fill
+                tag: div
+                class: progress-fill
+                animation_target: true
+      - id: footer_metadata
+        tag: footer
+        class: footer-metadata
+        role: metadata
+        z_index: 20

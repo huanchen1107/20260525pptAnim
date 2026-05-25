@@ -1,0 +1,24 @@
+slide: slide-1
+duration_seconds: 4.2
+beats:
+  - id: boot
+    t: 0.0
+    action: fade_in_top_metadata
+  - id: window
+    t: 0.05
+    action: reveal_window_frame
+  - id: title
+    t: 0.4
+    action: reveal_main_title
+  - id: subtitle
+    t: 0.56
+    action: reveal_subtitle
+  - id: note
+    t: 0.72
+    action: reveal_sticky_note
+  - id: progress
+    t: 1.0
+    action: fill_progress_bar
+  - id: footer
+    t: 1.1
+    action: reveal_footer_metadata

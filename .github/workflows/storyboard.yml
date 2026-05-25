@@ -1,0 +1,29 @@
+name: Storyboard Generation
+on:
+  workflow_dispatch:
+    inputs:
+      render:
+        description: 'Render storyboard HTML to MP4 video'
+        required: false
+        default: 'false'
+jobs:
+  storyboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm ci
+      - name: Make storyboard script executable
+        run: chmod +x user/assets/generate_storyboard.sh
+      - name: Generate storyboards
+        run: ./user/assets/generate_storyboard.sh
+
+      - name: Upload storyboard YAML artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: storyboards
+          path: user/assets/slides/*/analysis/storyboard.yaml

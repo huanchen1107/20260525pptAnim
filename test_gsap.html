@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+</head>
+<body>
+  <div style="position:absolute; bottom:5%; left:10%; width:80%; height:8px; background:rgba(255,0,0,0.2);">
+    <div id="elegantSlider" style="height:100%; width:0%; background:linear-gradient(90deg, #00f2fe, #4facfe);"></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({paused:true});
+    window.applyCustomAnimation = function(tl, durationSecs) {
+      tl.to('#elegantSlider', {
+        duration: durationSecs,
+        width: '100%',
+        ease: 'none'
+      }, 0);
+    };
+    if (typeof window.applyCustomAnimation === 'function') {
+      window.applyCustomAnimation(tl, 10);
+    }
+    
+    // Simulate hyperframes seek
+    let t = 0;
+    setInterval(() => {
+      t += 0.1;
+      tl.seek(t);
+    }, 100);
+  </script>
+</body>
+</html>

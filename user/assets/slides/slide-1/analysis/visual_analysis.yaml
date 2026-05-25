@@ -1,0 +1,10 @@
+slide: slide-1
+source: user/assets/slides/slide-1/slide-1.png
+canvas:
+  width: 5734
+  height: 3200
+  ratio: "16:9"
+notes:
+  - Full-resolution source kept as the only geometry reference.
+  - Visual style is paper-grid academic OS with sketch-window framing.
+  - Slide contains top metadata, framed title area, sticky note, progress bar, and footer metadata.

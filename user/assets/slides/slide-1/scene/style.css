@@ -1,0 +1,263 @@
+:root {
+  --paper: #f8f8f5;
+  --grid: rgba(132, 146, 166, 0.13);
+  --ink: #0f172a;
+  --blue: #9bc1ee;
+  --blue-ink: #2f507c;
+  --green: #c9f0c7;
+  --note: #f8ea7b;
+  --note-ink: #141414;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Arial Black", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+}
+
+#scene {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.24));
+}
+
+.paper-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 34px 34px;
+  opacity: 0.72;
+}
+
+.top-module-badge,
+.top-status,
+.footer-left,
+.footer-right,
+.status-copy {
+  position: absolute;
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 22px;
+  letter-spacing: 0.01em;
+  color: #0c1117;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.top-module-badge {
+  top: 18px;
+  left: 22px;
+}
+
+.top-status {
+  top: 18px;
+  right: 16px;
+}
+
+.window-frame {
+  position: absolute;
+  left: 150px;
+  top: 118px;
+  width: 1615px;
+  height: 840px;
+  border: 4px solid #2d4260;
+  border-radius: 28px;
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.55) inset,
+    0 2px 0 rgba(255, 255, 255, 0.55),
+    0 0 0 1px rgba(27, 39, 60, 0.15);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.18));
+}
+
+.window-frame::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 3px solid rgba(35, 50, 74, 0.9);
+  border-radius: 24px;
+  pointer-events: none;
+}
+
+.window-top {
+  position: relative;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 34px 0 10px;
+}
+
+.window-title {
+  position: relative;
+  min-width: 650px;
+  padding: 20px 22px;
+  border: 4px solid #375b8b;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(159, 196, 244, 0.98), rgba(119, 171, 230, 0.95));
+  color: #1f2937;
+  font-size: 28px;
+  line-height: 1;
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.45),
+    0 2px 0 rgba(0, 0, 0, 0.08);
+  transform: rotate(-0.25deg);
+}
+
+.window-title::after {
+  content: "";
+  position: absolute;
+  inset: 5px 6px 5px 8px;
+  border-radius: 14px;
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0 10%, transparent 10% 20%, rgba(255, 255, 255, 0.72) 20% 28%, transparent 28% 40%, rgba(255, 255, 255, 0.8) 40% 50%, transparent 50% 100%);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.window-controls {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-right: 2px;
+  font-size: 55px;
+  line-height: 1;
+  color: #1e293b;
+}
+
+.window-divider {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 98px;
+  height: 4px;
+  background: #3d5b87;
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.45);
+}
+
+.window-body {
+  position: relative;
+  height: calc(100% - 100px);
+}
+
+.title {
+  position: absolute;
+  top: 170px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 90px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: #070707;
+  white-space: nowrap;
+}
+
+.subtitle {
+  position: absolute;
+  top: 306px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 54px;
+  line-height: 1.1;
+  color: #101010;
+  white-space: nowrap;
+}
+
+.sticky-note {
+  position: absolute;
+  left: -22px;
+  bottom: 58px;
+  width: 318px;
+  height: 312px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 18%),
+    linear-gradient(180deg, #fff29c, #f7e86b 46%, #f1df59 100%);
+  box-shadow:
+    0 24px 26px rgba(0, 0, 0, 0.16),
+    0 3px 0 rgba(0, 0, 0, 0.12);
+  transform: rotate(-6deg);
+  clip-path: polygon(3% 4%, 96% 0, 100% 96%, 1% 100%);
+}
+
+.sticky-note::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(105deg, transparent 0 40%, rgba(255, 255, 255, 0.28) 40% 44%, transparent 44% 60%, rgba(255, 255, 255, 0.12) 60% 100%);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.sticky-note-text {
+  position: absolute;
+  inset: 18px 18px 16px 18px;
+  color: var(--note-ink);
+  font-size: 22px;
+  line-height: 1.28;
+  font-family: "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+  white-space: pre-wrap;
+  text-align: left;
+}
+
+.status-copy {
+  right: 215px;
+  top: 515px;
+  font-size: 22px;
+}
+
+.progress-box {
+  position: absolute;
+  left: 329px;
+  right: 34px;
+  bottom: 104px;
+  height: 66px;
+  border: 4px solid #1d2631;
+  border-radius: 19px;
+  background: rgba(255, 255, 255, 0.38);
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  bottom: 4px;
+  width: 62%;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent 18%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0 7px, rgba(255, 255, 255, 0) 7px 18px),
+    linear-gradient(180deg, #d2f0ce, #a7dbab 55%, #8bd099 100%);
+  box-shadow: inset 0 0 0 1px rgba(32, 55, 32, 0.12);
+  transform-origin: left center;
+}
+
+.footer-metadata {
+  position: absolute;
+  left: 22px;
+  right: 18px;
+  bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 19px;
+  color: #0b1118;
+}
+
+.footer-right {
+  text-align: right;
+}

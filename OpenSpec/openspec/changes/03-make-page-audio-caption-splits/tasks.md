@@ -1,0 +1,47 @@
+# Tasks – Make Page Audio Splits & Slide Packages
+
+- [x] **3.1 Split slides** – Detect slide boundaries using `ffmpeg` scene‑change detection and generate `slide‑N.png` for each slide.
+- [x] **3.2 Timeline input** – Provide or verify `timeline.md` that defines start/end timestamps for each slide.
+- [x] **3.3 Split audio** – Extract `audio‑N.mp3` from the source video according to timestamps.
+- [x] **3.4 Generate captions** – Run `generate_captions.sh` to produce `caption‑slide‑N.txt` for each slide.
+- [x] **Make script executable** (`chmod +x split_pages.sh`).
+- [x] **Add README** `OpenSpec/changes/03-make-page-audio-splits/README.md` describing usage and folder layout.
+- [x] **Add proposal** `OpenSpec/changes/03-make-page-audio-splits/proposal.md` (now includes pipeline steps 3.1‑3.3).
+- [x] **Add design** `OpenSpec/changes/03-make-page-audio-splits/design.md` (technical blueprint).
+- [x] **Update documentation** `user/assets/source-config.md` with a new "Audio‑Slide Split" tool section and usage example.
+- [x] **Run verification**:
+  - Execute `bash split_pages.sh`.
+  - Verify generated slide folders for slides 1‑6.
+- [x] **Create additional audio script** `split_additional_audio.sh` to extract audio for slides defined in `timeline.md` (covers slides 7‑13).
+- [ ] **Run additional audio extraction**:
+  - Execute `bash split_additional_audio.sh`.
+  - Verify audio files for slides 7‑13.
+- [x] **Commit changes** to the repository.
+
+- [x] **Create script** `split_pages.sh` in `user/assets/` that:
+  - Parses `A2Zsrt.srt` for timestamps and text.
+  - Detects slide transitions via `ffmpeg` scene‑change detection.
+  - Forces first slide start at 00:01.
+  - Skips silent subtitle entries.
+  - Generates `slide‑N/` folders with `audio‑N.mp3`, `slide‑N.png`, and `process_page.sh`.
+- [x] **Create caption generation script** `generate_captions.sh` in `user/assets/` that:
+  - Iterates over each `slide‑N/` folder.
+  - Runs `whisper` on `audio‑N.mp3` to produce `caption‑slide‑N.txt`.
+  - Stores plain‑text captions for later use.
+- [x] **Make scripts executable** (`chmod +x split_pages.sh generate_captions.sh`).
+- [x] **Add README** and documentation updates.
+- [x] **Run verification**:
+  - Execute `bash split_pages.sh` then `bash generate_captions.sh`.
+  - Verify `caption‑N.txt` files are generated and non‑empty.
+- [x] **Commit changes** to the repository.
+- [x] **Make script executable** (`chmod +x split_pages.sh`).
+- [x] **Add README** `OpenSpec/changes/03-make-page-audio-splits/README.md` describing usage and folder layout.
+- [x] **Add proposal** `OpenSpec/changes/03-make-page-audio-splits/proposal.md` (already contains detailed design and verification plan).
+- [x] **Add design** `OpenSpec/changes/03-make-page-audio-splits/design.md` (technical blueprint).
+- [x] **Update documentation** `user/assets/source-config.md` with a new "Audio‑Slide Split" tool section and usage example.
+- [x] **Run verification**:
+  - Execute `bash split_pages.sh`.
+  - Verify number of generated `audio‑N.mp3` files matches non‑empty subtitles.
+  - Spot‑check durations with `ffprobe`.
+  - Confirm `slide‑1.png` extracted near 00:01.
+- [x] **Commit changes** to the repository.

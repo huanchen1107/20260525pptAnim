@@ -1,0 +1,57 @@
+visual_analysis:
+  source:
+    slide: "slide-12"
+    image: "assets/slide-12-12.png"
+    audio: "audio-12.mp3"
+    audio_duration_seconds: "21.13"
+  canvas:
+    ratio: "16:9"
+    estimated_size: "1920x1080"
+  style:
+    direction: "Excalidraw-style engineering slide"
+    background: "grid paper"
+    mood: "academic operating system"
+  text:
+    caption: |
+      雖然掃描顯示,領域發審查,領邏集斷層,進度表文穩的達到100%
+    certainty: "partial"
+  blocks:
+    - id: background_grid
+      role: background
+      position: full_canvas
+      rebuild_method: css_grid_background
+    - id: main_frame
+      role: central_container
+      position: full_canvas
+      rebuild_method: semantic_frame
+    - id: title
+      role: primary_message
+      text: "雖然掃描顯示,領域發審查,領邏集斷層,進度表文穩的達到100%"
+      priority: high
+    - id: subtitle
+      role: secondary_message
+      text: "slide-12"
+      priority: medium
+    - id: note_box
+      role: supporting_note
+      text: "Generated from staged pipeline artifacts."
+      priority: medium
+    - id: progress_bar
+      role: progress_indicator
+      rebuild_method: animated_fill
+  animation_candidates:
+    - target: main_frame
+      animation: draw_in
+    - target: title
+      animation: fade_up
+    - target: progress_bar
+      animation: fill
+  rebuild_priority:
+    - semantic_frame
+    - title
+    - subtitle
+    - note_box
+  generation_rules:
+    - Compare the generated HTML layout against the source image before finalizing.
+    - Iterate the geometry until the outline, hierarchy, and spacing match the source closely.
+    - Prefer correcting the DOM structure and CSS positions over inventing new content blocks.

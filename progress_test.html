@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <style>
+    body { background: #111; color: white; font-family: sans-serif; overflow: hidden; margin: 0; }
+    .stage { position: relative; width: 1920px; height: 1080px; margin: 0 auto; background: #222; }
+    
+    /* Progress Bar Track */
+    .progress-track {
+      position: absolute;
+      bottom: 10%;
+      left: 10%;
+      width: 80%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    
+    /* The fill that grows */
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00ff87, #60efff);
+      border-radius: 6px;
+      box-shadow: 0 0 15px rgba(0, 255, 135, 0.5);
+    }
+    
+    /* Milestone dots and labels */
+    .milestone-dot {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 20px;
+      height: 20px;
+      background: white;
+      border: 4px solid #00ff87;
+      border-radius: 50%;
+      z-index: 10;
+    }
+    
+    .milestone-label {
+      position: absolute;
+      top: -40px;
+      transform: translateX(-50%);
+      font-size: 20px;
+      color: #ccc;
+      white-space: nowrap;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="progress-track" id="progressTrack">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <script>
+    // The "progress JSON object" defining milestones
+    const progressMilestones = [
+      { timeSecs: 1.0, label: "Title: 全指南" },
+      { timeSecs: 15.0, label: "系統工程" },
+      { timeSecs: 20.0, label: "從A到Z" },
+      { timeSecs: 25.0, label: "Debug Mode" }
+    ];
+    
+    const TOTAL_DURATION = 34.5; // Total duration of Slide 1
+
+    // Build DOM for milestones dynamically from the JSON object
+    const track = document.getElementById('progressTrack');
+    progressMilestones.forEach((milestone, index) => {
+      const percentage = (milestone.timeSecs / TOTAL_DURATION) * 100;
+      
+      // Create Dot
+      const dot = document.createElement('div');
+      dot.className = 'milestone-dot';
+      dot.id = 'dot-' + index;
+      dot.style.left = percentage + '%';
+      
+      // Create Label
+      const label = document.createElement('div');
+      label.className = 'milestone-label';
+      label.id = 'label-' + index;
+      label.style.left = percentage + '%';
+      label.textContent = milestone.label;
+      
+      track.appendChild(dot);
+      track.appendChild(label);
+    });
+
+    // Create GSAP Timeline
+    const tl = gsap.timeline({ paused: true });
+
+    // 1. Animate the main progress bar width
+    tl.to('#progressFill', {
+      duration: TOTAL_DURATION,
+      width: '100%',
+      ease: 'none'
+    }, 0);
+
+    // 2. Animate the milestones popping up when the progress bar hits them
+    progressMilestones.forEach((milestone, index) => {
+      // Pop the dot
+      tl.to('#dot-' + index, {
+        scale: 1.5,
+        duration: 0.5,
+        ease: 'back.out(1.7)'
+      }, milestone.timeSecs);
+      
+      // Show and slightly float the label
+      tl.to('#label-' + index, {
+        opacity: 1,
+        y: -10,
+        color: '#fff',
+        duration: 0.5,
+        ease: 'power2.out'
+      }, milestone.timeSecs);
+      
+      // Optional: fade out label shortly after so it's not too noisy
+      tl.to('#label-' + index, {
+        opacity: 0.3,
+        duration: 1,
+        ease: 'power2.inOut'
+      }, milestone.timeSecs + 3);
+    });
+
+    // Simulate playback (like hyperframes tick)
+    let t = 0;
+    const playbackRate = 1; // 1x speed
+    const intervalMs = 1000 / 30; // 30 FPS
+    
+    setInterval(() => {
+      t += (intervalMs / 1000) * playbackRate;
+      if (t > TOTAL_DURATION) t = 0; // Loop for testing
+      tl.seek(t);
+    }, intervalMs);
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+a2z_page:
+  source: "user/assets/A2Z.tsx"
+  page: 1
+  title: "System Boot"
+  source_label: "學術論文寫作全指南"
+  layout_family: "academic operating system"
+  canvas:
+    ratio: "16:9"
+    width: 1920
+    height: 1080
+  semantic_blocks:
+    - id: header_badge
+      role: badge
+      text: "// THE ACADEMIC OPERATING SYSTEM"
+    - id: main_title
+      role: title
+      text: "學術論文寫作全指南"
+    - id: subtitle
+      role: subtitle
+      text: "從 A 到 Z 的完美架構與 Debug 偵錯實務"
+    - id: description
+      role: supporting_copy
+      text: "論文寫作不是藝術，而是系統工程。掌握 A 到 Z 架構，將你的寫作流程升級為精準的「偵錯模式（Debug Mode）」！"
+    - id: action_primary
+      role: primary_action
+      text: "啟動系統架構偵錯"
+    - id: action_secondary
+      role: secondary_action
+      text: "自動修復預設節點 (綠燈)"
+    - id: status_line
+      role: footer_status
+      text: "SYSTEM STATUS: READY | TYPE: ACADEMIC_ENGINEERING | 2026.05.25"
+  storyboard_beats:
+    - boot
+    - title_reveal
+    - subtitle_reveal
+    - description_card
+    - action_buttons
+    - status_line
+  skills:
+    - screenshot-visual-analyzer
+    - ppt-template-matcher
+    - slide-scene-rebuild-html-skill
+    - gsap-storyboard-animator
+    - hyperframes-video-renderer

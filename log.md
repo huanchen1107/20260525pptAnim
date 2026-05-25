@@ -1,0 +1,453 @@
+# Development Log
+
+## 2026.05.24
+### Agent Skill Pack Pipeline
+- Added `pipeline.md` as the canonical artifact contract for the slide pipeline.
+- Added local skills for visual analysis, semantic block extraction, Excalidraw-style HTML, GSAP animation, HyperFrames rendering, QA, and orchestration.
+- Updated `startup.sh`, `README.md`, `project_initial.md`, and `skill_list.md` so the new pipeline survives workspace reset.
+- Fixed the Linux/macOS `sed -i` handling in `user/assets/split_pages.sh`.
+
+## 2026.05.21
+> **備忘錄**
+> 本專案使用官方 **Claude Code** 搭配 `.env` 中設定的 `ANTHROPIC_API_KEY` 運作。
+> 直接執行 `./startup.sh` 即可。
+
+### 今日重點紀錄
+1. **專案初始化**：完成環境重置與自動建庫。
+2. **新專案啟動**：準備開始 test-2026.5.21remotiontest 的開發工作。
+
+### 技術結論
+- (待填寫)
+
+## 2026.05.23
+### Documentation Integration
+- Synced `README.md`, `project_initial.md`, and `log.md` into one consistent documentation flow.
+- Updated runtime notes to Codex-first usage.
+- Recorded repository cleanup status as baseline for next development phase.
+
+## 2026.05.23 (工作階段自動摘要)
+> **本工作階段由 ./ending.sh 自動觸發生成備份**
+
+### 📂 變更檔案清單
+- `D .agents/skills/remotion-best-practices/SKILL.md`
+- ` D .agents/skills/remotion-best-practices/rules/3d.md`
+- ` D .agents/skills/remotion-best-practices/rules/assets/charts-bar-chart.tsx`
+- ` D .agents/skills/remotion-best-practices/rules/assets/text-animations-typewriter.tsx`
+- ` D .agents/skills/remotion-best-practices/rules/assets/text-animations-word-highlight.tsx`
+- ` D .agents/skills/remotion-best-practices/rules/audio-visualization.md`
+- ` D .agents/skills/remotion-best-practices/rules/audio.md`
+- ` D .agents/skills/remotion-best-practices/rules/calculate-metadata.md`
+- ` D .agents/skills/remotion-best-practices/rules/compositions.md`
+- ` D .agents/skills/remotion-best-practices/rules/display-captions.md`
+- ` D .agents/skills/remotion-best-practices/rules/ffmpeg.md`
+- ` D .agents/skills/remotion-best-practices/rules/get-audio-duration.md`
+- ` D .agents/skills/remotion-best-practices/rules/get-video-dimensions.md`
+- ` D .agents/skills/remotion-best-practices/rules/get-video-duration.md`
+- ` D .agents/skills/remotion-best-practices/rules/gifs.md`
+- ` D .agents/skills/remotion-best-practices/rules/google-fonts.md`
+- ` D .agents/skills/remotion-best-practices/rules/html-in-canvas.md`
+- ` D .agents/skills/remotion-best-practices/rules/images.md`
+- ` D .agents/skills/remotion-best-practices/rules/import-srt-captions.md`
+- ` D .agents/skills/remotion-best-practices/rules/light-leaks.md`
+- ` D .agents/skills/remotion-best-practices/rules/local-fonts.md`
+- ` D .agents/skills/remotion-best-practices/rules/lottie.md`
+- ` D .agents/skills/remotion-best-practices/rules/maplibre.md`
+- ` D .agents/skills/remotion-best-practices/rules/measuring-dom-nodes.md`
+- ` D .agents/skills/remotion-best-practices/rules/measuring-text.md`
+- ` D .agents/skills/remotion-best-practices/rules/parameters.md`
+- ` D .agents/skills/remotion-best-practices/rules/sequencing.md`
+- ` D .agents/skills/remotion-best-practices/rules/sfx.md`
+- ` D .agents/skills/remotion-best-practices/rules/silence-detection.md`
+- ` D .agents/skills/remotion-best-practices/rules/subtitles.md`
+- ` D .agents/skills/remotion-best-practices/rules/tailwind.md`
+- ` D .agents/skills/remotion-best-practices/rules/text-animations.md`
+- ` D .agents/skills/remotion-best-practices/rules/timing.md`
+- ` D .agents/skills/remotion-best-practices/rules/transcribe-captions.md`
+- ` D .agents/skills/remotion-best-practices/rules/transitions.md`
+- ` D .agents/skills/remotion-best-practices/rules/transparent-videos.md`
+- ` D .agents/skills/remotion-best-practices/rules/trimming.md`
+- ` D .agents/skills/remotion-best-practices/rules/videos.md`
+- ` D .agents/skills/remotion-best-practices/rules/voiceover.md`
+- ` M .env.bak`
+- ` D CLAUDE.md`
+- ` M README.md`
+- ` D Tutorial/Tutorial_1.md`
+- ` M log.md`
+- ` M project_initial.md`
+- ` D remotion/.agents/skills/remotion-best-practices/SKILL.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/3d.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/assets/charts-bar-chart.tsx`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/assets/text-animations-typewriter.tsx`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/assets/text-animations-word-highlight.tsx`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/audio-visualization.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/audio.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/calculate-metadata.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/compositions.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/display-captions.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/ffmpeg.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/get-audio-duration.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/get-video-dimensions.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/get-video-duration.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/gifs.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/google-fonts.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/html-in-canvas.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/images.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/import-srt-captions.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/light-leaks.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/local-fonts.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/lottie.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/maplibre.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/measuring-dom-nodes.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/measuring-text.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/parameters.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/sequencing.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/sfx.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/silence-detection.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/subtitles.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/tailwind.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/text-animations.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/timing.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/transcribe-captions.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/transitions.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/transparent-videos.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/trimming.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/videos.md`
+- ` D remotion/.agents/skills/remotion-best-practices/rules/voiceover.md`
+- ` D remotion/.gitignore`
+- ` D remotion/.prettierrc`
+- ` D remotion/README.md`
+- ` D remotion/eslint.config.mjs`
+- ` D remotion/extract_frame.py`
+- ` D remotion/out_sop_v7.mp4`
+- ` D remotion/out_sop_v8.mp4`
+- ` D remotion/out_top3_dark.mp4`
+- ` D remotion/out_top3_epic.mp4`
+- ` D remotion/out_top3_minimal.mp4`
+- ` D remotion/out_top3_typewriter.mp4`
+- ` D remotion/package-lock.json`
+- ` D remotion/package.json`
+- ` D remotion/public/audio.webm`
+- ` D remotion/public/static_background.png`
+- ` D remotion/public/video.mp4`
+- ` D remotion/remotion.config.ts`
+- ` D remotion/skills-lock.json`
+- ` D remotion/src/HelloWorld.tsx`
+- ` D remotion/src/HelloWorld/Arc.tsx`
+- ` D remotion/src/HelloWorld/Atom.tsx`
+- ` D remotion/src/HelloWorld/Logo.tsx`
+- ` D remotion/src/HelloWorld/Subtitle.tsx`
+- ` D remotion/src/HelloWorld/Title.tsx`
+- ` D remotion/src/HelloWorld/constants.ts`
+- ` D remotion/src/LoveClip/components/AnimeCharacter.tsx`
+- ` D remotion/src/LoveClip/components/HeartCore.tsx`
+- ` D remotion/src/LoveClip/components/LoveCharacter.tsx`
+- ` D remotion/src/LoveClip/components/ParticleField.tsx`
+- ` D remotion/src/LoveClip/components/TwilightSky.tsx`
+- ` D remotion/src/LoveClip/index.tsx`
+- ` D remotion/src/LoveClip/utils/camera.ts`
+- ` D remotion/src/LoveClip/utils/easing.ts`
+- ` D remotion/src/PaperSOP/components/BlueprintBackground.tsx`
+- ` D remotion/src/PaperSOP/components/SOPNode.tsx`
+- ` D remotion/src/PaperSOP/index.tsx`
+- ` D remotion/src/PaperSOP/utils/PaperSOPEasing.ts`
+- ` D remotion/src/Root.tsx`
+- ` D remotion/src/SimpleLogo.tsx`
+- ` D remotion/src/Top3/Top3Dark.tsx`
+- ` D remotion/src/Top3/Top3Epic.tsx`
+- ` D remotion/src/Top3/Top3Minimal.tsx`
+- ` D remotion/src/Top3/Top3Typewriter.tsx`
+- ` D remotion/src/assets/hand-pan.jpg`
+- ` D remotion/src/index.css`
+- ` D remotion/src/index.ts`
+- ` D remotion/tsconfig.json`
+- ` M skill_list.md`
+- ` M skills-lock.json`
+- ` M startup.sh`
+- ` D user/Task1=loveClipremotionPrompt.md`
+- ` D user/Task2-PaperSOP-ABCDEF.md`
+- ` D user/dialog.md`
+- `?? OpenSpec/`
+- `?? user-input/`
+
+### 📦 近期 Git 提交紀錄
+- `b99fc83 fix: remove hand-pan drawing animation from PaperSOP nodes`
+- `36ad65b feat: add Top3Typewriter - breaking news style with word-by-word typewriter reveal & score bars`
+- `79433bc feat: add 3 Top3 video templates (Dark, Minimal, Epic) in 16:9`
+
+## 2026.05.25 (工作階段自動摘要)
+> **本工作階段由 ./ending.sh 自動觸發生成備份**
+
+### 📂 變更檔案清單
+- `M .github/workflows/render_animation.yml`
+- ` M .github/workflows/storyboard.yml`
+- ` D OpenSpec/changes/04A-skill-comparison/design.md`
+- ` D OpenSpec/changes/04A-skill-comparison/proposal.md`
+- ` D OpenSpec/changes/04A-skill-comparison/tasks.md`
+- ` D OpenSpec/changes/04B-convert-image-to-html/.openspec.yaml`
+- ` D OpenSpec/changes/04B-convert-image-to-html/README.md`
+- ` D OpenSpec/changes/04B-convert-image-to-html/design.md`
+- ` D OpenSpec/changes/04B-convert-image-to-html/proposal.md`
+- ` D OpenSpec/changes/04B-convert-image-to-html/specs/image-to-html-conversion/spec.md`
+- ` D OpenSpec/changes/04B-convert-image-to-html/tasks.md`
+- ` D OpenSpec/changes/05-make-storyboard-for-each-page/.openspec.yaml`
+- ` D OpenSpec/changes/05-make-storyboard-for-each-page/README.md`
+- ` D OpenSpec/changes/05-make-storyboard-for-each-page/proposal.md`
+- ` D OpenSpec/changes/05-make-storyboard-for-each-page/tasks.md`
+- ` D OpenSpec/changes/06-create-page-animation/README.md`
+- ` D OpenSpec/changes/06-create-page-animation/proposal.md`
+- ` D OpenSpec/changes/06-create-page-animation/tasks.md`
+- ` D OpenSpec/changes/archive/2026-05-23-01-system-check/.openspec.yaml`
+- ` D OpenSpec/changes/archive/2026-05-23-01-system-check/01-system-check/design.md`
+- ` D OpenSpec/changes/archive/2026-05-23-01-system-check/01-system-check/proposal.md`
+- ` D OpenSpec/changes/archive/2026-05-23-01-system-check/01-system-check/tasks.md`
+- ` D OpenSpec/changes/archive/2026-05-23-01-system-check/design.md`
+- ` D OpenSpec/changes/archive/2026-05-23-01-system-check/proposal.md`
+- ` D OpenSpec/changes/archive/2026-05-23-01-system-check/specs/system-check/spec.md`
+- ` D OpenSpec/changes/archive/2026-05-23-01-system-check/tasks.md`
+- ` D OpenSpec/changes/archive/2026-05-23-02-get-source/README.md`
+- ` D OpenSpec/changes/archive/2026-05-23-02-get-source/design.md`
+- ` D OpenSpec/changes/archive/2026-05-23-02-get-source/proposal.md`
+- ` D OpenSpec/changes/archive/2026-05-23-02-get-source/specs/source-fetch.md`
+- ` D OpenSpec/changes/archive/2026-05-23-02-get-source/specs/source/spec.md`
+- ` D OpenSpec/changes/archive/2026-05-23-03-make-page-audio-caption-splits/README.md`
+- ` D OpenSpec/changes/archive/2026-05-23-03-make-page-audio-caption-splits/design.md`
+- ` D OpenSpec/changes/archive/2026-05-23-03-make-page-audio-caption-splits/proposal.md`
+- ` D OpenSpec/changes/archive/2026-05-23-03-make-page-audio-caption-splits/specs/audio-split.md`
+- ` D OpenSpec/changes/archive/2026-05-23-03-make-page-audio-caption-splits/tasks.md`
+- ` M README.md`
+- ` M ending.sh`
+- ` M log.md`
+- ` M project_initial.md`
+- ` M skill_list.md`
+- ` M skills-lock.json`
+- ` M startup.sh`
+- ` M tests/conversion.test.sh`
+- ` M tests/render_animation.test.sh`
+- ` M tests/storyboard.test.sh`
+- ` M user/assets/convert_image_to_html.sh`
+- ` D user/assets/demo_html/index.html`
+- ` D user/assets/demo_html/slide-1-01_excalidraw.html`
+- ` D user/assets/demo_html/slide-1-01_simple.html`
+- ` M user/assets/generate_storyboard.sh`
+- ` M user/assets/render_animation.sh`
+- ` D user/assets/sample_images/slide-1.png`
+- ` M user/assets/slides/slide-1/audio-1.mp3`
+- ` M user/assets/slides/slide-1/process_page.sh`
+- ` M user/assets/slides/slide-1/slide-1-01.html`
+- ` D user/assets/slides/slide-1/slide-1-storyboard.html`
+- ` M user/assets/slides/slide-1/slide-1.html`
+- ` M user/assets/slides/slide-10/audio-10.mp3`
+- ` D user/assets/slides/slide-10/slide-10-10.html`
+- ` D user/assets/slides/slide-10/slide-10-storyboard.html`
+- ` M user/assets/slides/slide-10/slide-10.html`
+- ` M user/assets/slides/slide-11/audio-11.mp3`
+- ` D user/assets/slides/slide-11/slide-11-11.html`
+- ` D user/assets/slides/slide-11/slide-11-storyboard.html`
+- ` M user/assets/slides/slide-11/slide-11.html`
+- ` M user/assets/slides/slide-12/audio-12.mp3`
+- ` D user/assets/slides/slide-12/slide-12-12.html`
+- ` D user/assets/slides/slide-12/slide-12-storyboard.html`
+- ` M user/assets/slides/slide-12/slide-12.html`
+- ` D user/assets/slides/slide-13/slide-13-13.html`
+- ` D user/assets/slides/slide-13/slide-13-storyboard.html`
+- ` M user/assets/slides/slide-13/slide-13.html`
+- ` M user/assets/slides/slide-2/audio-2.mp3`
+- ` M user/assets/slides/slide-2/process_page.sh`
+- ` D user/assets/slides/slide-2/slide-2-02.html`
+- ` D user/assets/slides/slide-2/slide-2-storyboard.html`
+- ` M user/assets/slides/slide-2/slide-2.html`
+- ` M user/assets/slides/slide-3/audio-3.mp3`
+- ` M user/assets/slides/slide-3/process_page.sh`
+- ` D user/assets/slides/slide-3/slide-3-03.html`
+- ` D user/assets/slides/slide-3/slide-3-storyboard.html`
+- ` M user/assets/slides/slide-3/slide-3.html`
+- ` M user/assets/slides/slide-4/audio-4.mp3`
+- ` M user/assets/slides/slide-4/process_page.sh`
+- ` D user/assets/slides/slide-4/slide-4-04.html`
+- ` D user/assets/slides/slide-4/slide-4-storyboard.html`
+- ` M user/assets/slides/slide-4/slide-4.html`
+- ` M user/assets/slides/slide-5/audio-5.mp3`
+- ` M user/assets/slides/slide-5/process_page.sh`
+- ` D user/assets/slides/slide-5/slide-5-05.html`
+- ` D user/assets/slides/slide-5/slide-5-storyboard.html`
+- ` M user/assets/slides/slide-5/slide-5.html`
+- ` M user/assets/slides/slide-6/audio-6.mp3`
+- ` M user/assets/slides/slide-6/process_page.sh`
+- ` D user/assets/slides/slide-6/slide-6-06.html`
+- ` D user/assets/slides/slide-6/slide-6-storyboard.html`
+- ` M user/assets/slides/slide-6/slide-6.html`
+- ` M user/assets/slides/slide-7/audio-7.mp3`
+- ` D user/assets/slides/slide-7/slide-7-07.html`
+- ` D user/assets/slides/slide-7/slide-7-storyboard.html`
+- ` M user/assets/slides/slide-7/slide-7.html`
+- ` M user/assets/slides/slide-8/audio-8.mp3`
+- ` D user/assets/slides/slide-8/slide-8-08.html`
+- ` D user/assets/slides/slide-8/slide-8-storyboard.html`
+- ` M user/assets/slides/slide-8/slide-8.html`
+- ` M user/assets/slides/slide-9/audio-9.mp3`
+- ` D user/assets/slides/slide-9/slide-9-09.html`
+- ` D user/assets/slides/slide-9/slide-9-storyboard.html`
+- ` M user/assets/slides/slide-9/slide-9.html`
+- ` M user/assets/split_additional_audio.sh`
+- ` M user/assets/split_pages.sh`
+- ` D user/assets/storyboards/slide-1-storyboard.html`
+- ` D user/assets/storyboards/slide-10-storyboard.html`
+- ` D user/assets/storyboards/slide-11-storyboard.html`
+- ` D user/assets/storyboards/slide-12-storyboard.html`
+- ` D user/assets/storyboards/slide-13-storyboard.html`
+- ` D user/assets/storyboards/slide-2-storyboard.html`
+- ` D user/assets/storyboards/slide-3-storyboard.html`
+- ` D user/assets/storyboards/slide-4-storyboard.html`
+- ` D user/assets/storyboards/slide-5-storyboard.html`
+- ` D user/assets/storyboards/slide-6-storyboard.html`
+- ` D user/assets/storyboards/slide-7-storyboard.html`
+- ` D user/assets/storyboards/slide-8-storyboard.html`
+- ` D user/assets/storyboards/slide-9-storyboard.html`
+- ` D "work-5aeb8d09-bbce-4c61-b735-306aa0162881/compiled/hf-ext/Users/huanchen/Desktop/2026 Projects/20260523pptAniv1/user/assets/sample_images/slide-1.png"`
+- ` D work-5aeb8d09-bbce-4c61-b735-306aa0162881/compiled/index.html`
+- `?? .agents/skills/animejs/`
+- `?? .agents/skills/contribute-catalog/`
+- `?? .agents/skills/css-animations/`
+- `?? .agents/skills/excalidraw-diagram/`
+- `?? .agents/skills/excalidraw-style-html-builder/`
+- `?? .agents/skills/gsap-storyboard-animator/`
+- `?? .agents/skills/gsap/`
+- `?? .agents/skills/hyperframes-cli/`
+- `?? .agents/skills/hyperframes-media/`
+- `?? .agents/skills/hyperframes-registry/`
+- `?? .agents/skills/hyperframes-video-renderer/`
+- `?? .agents/skills/hyperframes/`
+- `?? .agents/skills/lottie/`
+- `?? .agents/skills/ppt-template-matcher/`
+- `?? .agents/skills/project-orchestrator/`
+- `?? .agents/skills/remotion-to-hyperframes/`
+- `?? .agents/skills/screenshot-visual-analyzer/`
+- `?? .agents/skills/semantic-block-extractor/`
+- `?? .agents/skills/tailwind/`
+- `?? .agents/skills/three/`
+- `?? .agents/skills/typegpu/`
+- `?? .agents/skills/visual-qa-checker/`
+- `?? .agents/skills/waapi/`
+- `?? .agents/skills/website-to-hyperframes/`
+- `?? OpenSpec/openspec/changes/01-system-check/`
+- `?? OpenSpec/openspec/changes/02-get-source/`
+- `?? OpenSpec/openspec/changes/03-make-page-audio-caption-splits/`
+- `?? OpenSpec/openspec/changes/04A-skill-comparison/`
+- `?? OpenSpec/openspec/changes/04B-convert-image-to-html/`
+- `?? OpenSpec/openspec/changes/05-make-storyboard-for-each-page/`
+- `?? OpenSpec/openspec/changes/06-create-page-animation/`
+- `?? OpenSpec/openspec/changes/07-combine-presentation-videos/`
+- `?? OpenSpec/openspec/changes/08-new-pipeline/`
+- `?? dummy.json`
+- `?? pipeline.md`
+- `?? progress_test.html`
+- `?? test-slide-1-16x9.mp4`
+- `?? test-slide-1-quiet-progress.mp4`
+- `?? test-slide-1-quiet-progress2.mp4`
+- `?? test-slide-1-yaml.mp4`
+- `?? test-slide-2-yaml.mp4`
+- `?? test-slide-3-yaml.mp4`
+- `?? test-slide-4-yaml.mp4`
+- `?? test_gsap.html`
+- `?? tests/combine_videos.test.sh`
+- `?? user/assets/combine_videos.sh`
+- `?? user/assets/generate_thumbnail_previews.sh`
+- `?? user/assets/presentation-first-three-audio.mp4`
+- `?? user/assets/presentation-first-two-audio.mp4`
+- `?? user/assets/presentation-master-audio-safe.mp4`
+- `?? user/assets/presentation-master-audio.mp4`
+- `?? user/assets/presentation-master.mp4`
+- `?? user/assets/run_pipeline.sh`
+- `?? user/assets/slides/slide-1/analysis/`
+- `?? user/assets/slides/slide-1/animation.js`
+- `?? user/assets/slides/slide-1/assets/`
+- `?? user/assets/slides/slide-1/custom-html.html`
+- `?? user/assets/slides/slide-1/index.html`
+- `?? user/assets/slides/slide-1/preview/`
+- `?? user/assets/slides/slide-1/scene/`
+- `?? user/assets/slides/slide-1/slide-1-01.mp3`
+- `?? user/assets/slides/slide-1/slide-1-01.txt`
+- `?? user/assets/slides/slide-1/storyboard.yml`
+- `?? user/assets/slides/slide-1/style.css`
+- `?? user/assets/slides/slide-10/analysis/`
+- `?? user/assets/slides/slide-10/preview/`
+- `?? user/assets/slides/slide-10/scene/`
+- `?? user/assets/slides/slide-10/slide-10-10.mp4`
+- `?? user/assets/slides/slide-10/slide-10-animation.mp4`
+- `?? user/assets/slides/slide-10/storyboard.yml`
+- `?? user/assets/slides/slide-11/analysis/`
+- `?? user/assets/slides/slide-11/preview/`
+- `?? user/assets/slides/slide-11/scene/`
+- `?? user/assets/slides/slide-11/slide-11-11.mp4`
+- `?? user/assets/slides/slide-11/slide-11-animation.mp4`
+- `?? user/assets/slides/slide-11/storyboard.yml`
+- `?? user/assets/slides/slide-12/analysis/`
+- `?? user/assets/slides/slide-12/preview/`
+- `?? user/assets/slides/slide-12/scene/`
+- `?? user/assets/slides/slide-12/slide-12-12.mp4`
+- `?? user/assets/slides/slide-12/slide-12-animation.mp4`
+- `?? user/assets/slides/slide-12/storyboard.yml`
+- `?? user/assets/slides/slide-13/analysis/`
+- `?? user/assets/slides/slide-13/preview/`
+- `?? user/assets/slides/slide-13/scene/`
+- `?? user/assets/slides/slide-13/slide-13-13.mp4`
+- `?? user/assets/slides/slide-13/slide-13-animation.mp4`
+- `?? user/assets/slides/slide-13/storyboard.yml`
+- `?? user/assets/slides/slide-2/analysis/`
+- `?? user/assets/slides/slide-2/custom-html.html`
+- `?? user/assets/slides/slide-2/preview/`
+- `?? user/assets/slides/slide-2/scene/`
+- `?? user/assets/slides/slide-2/slide-2-animation.mp4`
+- `?? user/assets/slides/slide-2/storyboard.yml`
+- `?? user/assets/slides/slide-3/analysis/`
+- `?? user/assets/slides/slide-3/custom-html.html`
+- `?? user/assets/slides/slide-3/preview/`
+- `?? user/assets/slides/slide-3/scene/`
+- `?? user/assets/slides/slide-3/slide-3-03.mp4`
+- `?? user/assets/slides/slide-3/slide-3-animation.mp4`
+- `?? user/assets/slides/slide-3/storyboard.yml`
+- `?? user/assets/slides/slide-4/analysis/`
+- `?? user/assets/slides/slide-4/custom-html.html`
+- `?? user/assets/slides/slide-4/preview/`
+- `?? user/assets/slides/slide-4/scene/`
+- `?? user/assets/slides/slide-4/slide-4-04.mp4`
+- `?? user/assets/slides/slide-4/slide-4-animation.mp4`
+- `?? user/assets/slides/slide-4/storyboard.yml`
+- `?? user/assets/slides/slide-5/analysis/`
+- `?? user/assets/slides/slide-5/custom-html.html`
+- `?? user/assets/slides/slide-5/preview/`
+- `?? user/assets/slides/slide-5/scene/`
+- `?? user/assets/slides/slide-5/slide-5-05.mp4`
+- `?? user/assets/slides/slide-5/slide-5-animation.mp4`
+- `?? user/assets/slides/slide-5/storyboard.yml`
+- `?? user/assets/slides/slide-6/analysis/`
+- `?? user/assets/slides/slide-6/preview/`
+- `?? user/assets/slides/slide-6/scene/`
+- `?? user/assets/slides/slide-6/slide-6-06.mp4`
+- `?? user/assets/slides/slide-6/slide-6-animation.mp4`
+- `?? user/assets/slides/slide-6/storyboard.yml`
+- `?? user/assets/slides/slide-7/analysis/`
+- `?? user/assets/slides/slide-7/preview/`
+- `?? user/assets/slides/slide-7/scene/`
+- `?? user/assets/slides/slide-7/slide-7-07.mp4`
+- `?? user/assets/slides/slide-7/slide-7-animation.mp4`
+- `?? user/assets/slides/slide-7/storyboard.yml`
+- `?? user/assets/slides/slide-8/analysis/`
+- `?? user/assets/slides/slide-8/preview/`
+- `?? user/assets/slides/slide-8/scene/`
+- `?? user/assets/slides/slide-8/slide-8-08.mp4`
+- `?? user/assets/slides/slide-8/slide-8-animation.mp4`
+- `?? user/assets/slides/slide-8/storyboard.yml`
+- `?? user/assets/slides/slide-9/analysis/`
+- `?? user/assets/slides/slide-9/preview/`
+- `?? user/assets/slides/slide-9/scene/`
+- `?? user/assets/slides/slide-9/slide-9-09.mp4`
+- `?? user/assets/slides/slide-9/slide-9-animation.mp4`
+- `?? user/assets/slides/slide-9/storyboard.yml`
+- `?? user/assets/yaml_to_json.js`
+- `?? user/dialog.md`
+
+### 📦 近期 Git 提交紀錄
+- `2ad1f8a feat: Implement page animation rendering pipeline`
+- `6b2d667 chore: remove deleted work dir from index and update gitignore`
+- `5387cd1 docs: note hyperframes render blocker in 06 tasks`
