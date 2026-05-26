@@ -9,3 +9,6 @@ build/
 .idea/
 work-*/
 dist/
+.pipeline_ui/
+user/project-1/slides/.render-*/
+user/project-1/slides/*.preview.mp4
