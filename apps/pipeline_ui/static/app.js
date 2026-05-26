@@ -591,6 +591,12 @@ async function refreshSlides() {
       textarea.dataset.manualSized = "1";
     });
     ideaBox.appendChild(textarea);
+    ideaBox.appendChild(el("div", {class: "label", style: "margin-top:8px;"}, ["Storyboard YAML (synced)"]));
+    const storyboardView = el("textarea", {"data-slide-storyboard": s, readonly: "true"});
+    storyboardView.style.minHeight = "140px";
+    storyboardView.style.height = "180px";
+    storyboardView.style.resize = "vertical";
+    ideaBox.appendChild(storyboardView);
     let ideaSyncTimer = null;
 
     const actions = el("div", {class: "actions"}, []);
@@ -608,11 +614,21 @@ async function refreshSlides() {
         }}, ["Save Timeline"]),
       );
     }
+    const refreshStoryboardSharedView = async () => {
+      const sb = await loadStoryboard(project, s);
+      storyboardView.value = sb || "";
+      renderObjectsPanel(objectsWide, project, s, () => {
+        actions.querySelector(".status").textContent = "Objects updated.";
+        setTimeout(() => (actions.querySelector(".status").textContent = ""), 1500);
+        refreshStoryboardSharedView().catch(() => {});
+      });
+    };
     const syncIdeaToStoryboard = async () => {
       await saveIdea(project, s, textarea.value || "");
       const regen = await apiSend(`/api/storyboard/${encodeURIComponent(project)}/${encodeURIComponent(s)}/regenerate`, "POST", {});
       await pollRun(regen.run.run_id);
       await refreshStepper();
+      await refreshStoryboardSharedView();
       actions.querySelector(".status").textContent = "Idea synced to storyboard.";
       setTimeout(() => (actions.querySelector(".status").textContent = ""), 1500);
     };
@@ -646,6 +662,7 @@ async function refreshSlides() {
         });
         await pollRun(runRes.run.run_id);
         await refreshStepper();
+        await refreshStoryboardSharedView();
         actions.querySelector(".status").textContent = "Storyboard + pipeline complete.";
         setTimeout(() => (actions.querySelector(".status").textContent = ""), 1800);
         if (resultToggleBtn) {
@@ -702,10 +719,7 @@ async function refreshSlides() {
 
     card.appendChild(row2);
     const objectsWide = el("div", {class: "objectsWide"}, []);
-    renderObjectsPanel(objectsWide, project, s, () => {
-      actions.querySelector(".status").textContent = "Objects updated.";
-      setTimeout(() => (actions.querySelector(".status").textContent = ""), 1500);
-    });
+    await refreshStoryboardSharedView();
     card.appendChild(objectsWide);
     container.appendChild(card);
   }

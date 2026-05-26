@@ -10,7 +10,7 @@ caption: |
   將您的寫作流程正式升級為高階的真錯模式, D-Buck Mode
   透過這套系統化的視角, 您將能精準掌控文章的每一個…
 idea: "Storyboard abstract:
-- Existing actions: progress_fill, zoom_in, pulse, font_red_pass, fade_up, font_red_pass
+- Existing actions: font_red_pass, fade_in
 
 Narration (full):
 各位學者與研究人員, 歡迎進入學術論文寫作全指南
@@ -47,13 +47,38 @@ scenes:
     start: 4.20
     end: 33.93
 objects:
+  - id: title_center
+    at: 0.30
+    action: word_by_word
+    duration: 2.20
+    intent: title_intro
+  - id: progress_fill
+    at: 0.20
+    action: progress_fill
+    duration: 33.53
+    intent: timeline_progress
+  - id: main_image
+    at: 0.35
+    action: zoom_in
+    duration: 2.40
+    intent: image_intro
+  - id: main_image
+    at: 2.80
+    action: pulse
+    duration: 1.10
+    intent: image_emphasis
   - id: pass_text
     at: 10.00
     action: font_red_pass
     duration: 1.20
     intent: red_font_pass
-  - id: main_image
-    at: 0.00
-    action: fade_in
-    duration: 0.80
-    intent: manual
+  - id: pass_text
+    at: 10.00
+    action: fade_up
+    duration: 1.00
+    intent: pass_marker
+  - id: pass_text
+    at: 11.00
+    action: font_red_pass
+    duration: 1.20
+    intent: pass_marker

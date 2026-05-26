@@ -1,5 +1,5 @@
 Storyboard abstract:
-- Existing actions: progress_fill, zoom_in, pulse, font_red_pass, fade_up, font_red_pass
+- Existing actions: font_red_pass, fade_in
 
 Narration (full):
 各位學者與研究人員, 歡迎進入學術論文寫作全指南
