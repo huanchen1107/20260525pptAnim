@@ -1,0 +1,20 @@
+{
+  "run_id": "50ab9bae1ef44e72b34d5f2c41db0bad",
+  "project_id": "project-1",
+  "slide": "slide-1",
+  "step": "generate_storyboard",
+  "status": "succeeded",
+  "started_at": 1779788477.817132,
+  "ended_at": 1779788478.16382,
+  "exit_code": 0,
+  "log_path": "/Users/huanchen/Desktop/2026 Projects/20260525pptAnim/.pipeline_ui/runs/50ab9bae1ef44e72b34d5f2c41db0bad/run.log",
+  "command": [
+    "bash",
+    "user/all-project-base/scripts/generate_storyboard.sh",
+    "--project",
+    "/Users/huanchen/Desktop/2026 Projects/20260525pptAnim/user/project-1",
+    "--slide",
+    "1",
+    "--no-prompt"
+  ]
+}

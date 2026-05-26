@@ -30,12 +30,39 @@ for image_file in "$SLIDES_DIR"/slide-[0-9]*.png; do
   audio_file="$SLIDES_DIR/${slide_name}-audio.mp3"
 
   caption="$slide_name"
+  subtitle=""
+  subtitle_display=""
+  cue_lines=""
+  cue_b64=""
   if [[ -f "$audio_text_file" ]]; then
-    caption="$(tr -d '\r' < "$audio_text_file" | sed '/^[[:space:]]*$/d' | head -n 1)"
+    cue_lines="$(tr -d '\r' < "$audio_text_file" | sed '/^[[:space:]]*$/d')"
+    cue_lines="$(python3 - <<'PY' "$cue_lines"
+import re,sys
+txt=sys.argv[1] if len(sys.argv)>1 else ""
+lines=[x.strip() for x in txt.splitlines() if x.strip()]
+if lines:
+    last=lines[-1]
+    if not re.search(r'[。！？.!?]$', last):
+        if len(last) >= 6:
+            lines[-1] = last + "…"
+        else:
+            lines = lines[:-1]
+print("\n".join(lines))
+PY
+)"
+    caption="$(printf '%s\n' "$cue_lines" | sed -n '1p')"
+    subtitle=""
+    subtitle_display=""
+    cue_b64="$(python3 -c 'import base64,sys; s=sys.stdin.read(); print(base64.b64encode(s.encode("utf-8")).decode("ascii"))' <<< "$cue_lines")"
   elif [[ -f "$fallback_caption_file" ]]; then
     caption="$(tr -d '\r' < "$fallback_caption_file" | sed '/^[[:space:]]*$/d' | head -n 1)"
   fi
   [[ -n "$caption" ]] || caption="$slide_name"
+  [[ -n "$subtitle" ]] || subtitle=""
+  [[ -n "$subtitle_display" ]] || subtitle_display=""
+  subtitle_safe="${subtitle//\"/}"
+  cue_b64_safe="${cue_b64//\"/}"
+  caption_safe="${caption//\"/}"
 
   duration_seconds="$DEFAULT_DURATION_SECONDS"
   if [[ -f "$audio_file" ]] && command -v ffprobe >/dev/null 2>&1; then
@@ -66,7 +93,7 @@ for image_file in "$SLIDES_DIR"/slide-[0-9]*.png; do
     fi
   else
     cat > "$html_file" <<HTML
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22/%3E"><style>html,body{margin:0;background:#111;color:#fff;font-family:Arial,sans-serif} .wrap{width:1920px;height:1080px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px} img{max-width:90%;max-height:70%;object-fit:contain;border:2px solid #333} h1{font-size:56px;margin:0}</style></head><body><div class="wrap"><h1>${caption}</h1><img src="./${slide_name}.png" alt="${slide_name}"></div></body></html>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22/%3E"><style>html,body{margin:0;background:#070b13;color:#fff;font-family:Arial,sans-serif} .wrap{width:1920px;height:1080px;position:relative;overflow:hidden;background:#070b13} img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border:0;box-shadow:none} #title_center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:78%;text-align:center;font-size:84px;font-weight:900;line-height:1.08;letter-spacing:.01em;color:#fff;text-shadow:0 8px 30px rgba(0,0,0,.58);z-index:6;opacity:0} #pass_text{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:120px;font-weight:900;letter-spacing:.04em;color:#ff2f2f;text-shadow:0 10px 38px rgba(0,0,0,.45);z-index:7;opacity:0} .progress{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);width:70%;height:18px;border:2px solid #6f8ab3;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.08);z-index:4} .progress-fill{width:100%;height:100%;background:linear-gradient(90deg,#60a5fa,#22d3ee);transform:scaleX(0);transform-origin:left center} .obj-label{position:absolute;background:#ef4444;color:#fff;font:700 22px/1.2 Arial,sans-serif;padding:6px 10px;border-radius:8px;z-index:20;box-shadow:0 4px 14px rgba(0,0,0,.35)} .obj-label.main{left:26px;top:26px} .obj-label.title{left:50%;top:calc(50% - 168px);transform:translateX(-50%)} .obj-label.pass{left:50%;top:calc(50% - 98px);transform:translateX(-50%)} .obj-label.progress{left:50%;bottom:62px;transform:translateX(-50%)}</style></head><body><div class="wrap"><img id="main_image" src="./${slide_name}.png" alt="${slide_name}"><div id="title_center">${caption_safe}</div><div id="pass_text">PASS</div><div class="progress"><div id="progress_fill" class="progress-fill"></div></div><div class="obj-label main">id: main_image</div><div class="obj-label title">id: title_center</div><div class="obj-label pass">id: pass_text</div><div class="obj-label progress">id: progress_fill</div></div></body></html>
 HTML
   fi
 

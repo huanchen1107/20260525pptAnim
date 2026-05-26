@@ -1,7 +1,45 @@
 slide: "slide-2"
 duration: "33.93"
 fps: 30
-caption: "我們首先要面對一個殘酷的問題"
+caption: |
+  我們首先要面對一個殘酷的問題
+  為什麼您的論文會遭到退稿呢?
+  從資深神告委員的視角 PoC
+  退稿通常不是因為單純的觀點差異
+  而是整篇文章發生了系統編譯失敗
+  這類制定錯誤保寒、模組A的動機缺失
+  系統架構圖與數學公式的邏輯部品配
+  或是與最先進技術的比較過於補弱
+  最佳的解決方案就是掏用這套A導致的架構
+  如同資深工程師…
+idea: "Storyboard abstract:
+- Existing actions: word_by_word, fade_up, progress_fill
+
+Narration (full):
+我們首先要面對一個殘酷的問題
+為什麼您的論文會遭到退稿呢?
+從資深神告委員的視角 PoC
+退稿通常不是因為單純的觀點差異
+而是整篇文章發生了系統編譯失敗
+這類制定錯誤保寒、模組A的動機缺失
+系統架構圖與數學公式的邏輯部品配
+或是與最先進技術的比較過於補弱
+最佳的解決方案就是掏用這套A導致的架構
+如同資深工程師…
+
+User ideas:
+Slide: slide-2
+Narration: 我們首先要面對一個殘酷的問題
+Goal:
+- Communicate the main point clearly.
+Motion plan (default):
+- Start: clean canvas, then reveal title.
+- Middle: emphasize 1-2 key phrases.
+- End: subtle settle (no chaos).
+Specific suggestions:
+- Title: word-by-word reveal (1.5-2.5s).
+- Subtitle/caption: fade-up after title (0.6-1.2s).
+- Progress: fill across duration."
 scenes:
   - id: intro
     start: 0.00
@@ -14,42 +52,17 @@ scenes:
     end: 33.93
 objects:
   - id: title
-    at: 0.60
-    action: fade_in
-    duration: 0.60
-    intent: intro_reveal
+    at: 0.30
+    action: word_by_word
+    duration: 2.00
+    intent: title_intro
   - id: subtitle
-    at: 1.50
-    action: draw_in
-    duration: 0.60
-    intent: step_reveal
+    at: 2.20
+    action: fade_up
+    duration: 0.90
+    intent: caption_intro
   - id: progress_fill
-    at: 2.40
-    action: pulse
-    duration: 0.60
-    intent: emphasize
-  - id: global
-    at: 10.00
-    action: micro_emphasis
-    duration: 0.40
-    intent: pacing_guard
-  - id: global
-    at: 15.00
-    action: micro_emphasis
-    duration: 0.40
-    intent: pacing_guard
-  - id: global
-    at: 20.00
-    action: micro_emphasis
-    duration: 0.40
-    intent: pacing_guard
-  - id: global
-    at: 25.00
-    action: micro_emphasis
-    duration: 0.40
-    intent: pacing_guard
-  - id: global
-    at: 30.00
-    action: micro_emphasis
-    duration: 0.40
-    intent: pacing_guard
+    at: 0.20
+    action: progress_fill
+    duration: 33.53
+    intent: timeline_progress

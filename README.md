@@ -5,6 +5,12 @@ Unified project docs:
 - `project_initial.md`: current goals and scope
 - `pipeline.md`: slide pipeline and artifact contract
 - `log.md`: execution history and status
+- `docs/CI_NOTES.md`: CI + design contracts
+
+## Log Location (Always Here)
+
+- Canonical development log: `log.md`
+- Rule: record every important fix and pipeline decision in `log.md` before ending a work session.
 
 ## Quick Start
 
@@ -35,21 +41,23 @@ One-command pipeline:
 ./user/all-project-base/scripts/run_pipeline.sh
 ```
 
-MP4 outputs are written next to each slide using the slide directory name, for example `user/project-1/slides/slide-1/slide-1.mp4`.
-For tuning, run the same pipeline in preview mode:
+MP4 outputs are written next to each slide (flat artifacts), for example `user/project-1/slides/slide-1.mp4`.
+
+Defaults:
+- The pipeline defaults to `final` mode.
+- Use `--mode preview` only when explicitly requested.
+
+Examples:
 
 ```bash
-./user/all-project-base/scripts/run_pipeline.sh --mode preview
+# Single slide (final)
+./user/all-project-base/scripts/run_pipeline.sh --project user/project-1 --slide 1 --mode final
+
+# Whole project (final)
+./user/all-project-base/scripts/run_pipeline.sh --project user/project-1 --mode final
 ```
 
-Preview renders are smaller and land in `user/project-1/slides/<slide>/preview/` as `*.preview.mp4`.
-For a single-slide preview pass, run:
-
-```bash
-./user/all-project-base/scripts/run_pipeline.sh --mode auto user/project-1/slides/slide-1
-```
-
-Auto mode now runs a single preview pass with the full-resolution source image and skips the old comparison loop.
+Note: `--mode auto` also runs `final` by default in this workspace.
 
 ### 1. Start With The Source
 
@@ -89,7 +97,7 @@ Recommended pattern:
 
 ### 6. Render To MP4
 
-Use HyperFrames to render the HTML scene into a video file such as `user/project-1/slides/slide-1/slide-1.mp4`.
+Use HyperFrames to render the HTML scene into a video file such as `user/project-1/slides/slide-1.mp4`.
 
 ### 7. QA Review
 
@@ -125,8 +133,8 @@ For the new React source deck, `user/project-1/A2Z.tsx` is mapped through `user/
 
 ## 📍 Latest Status
 
-Last updated on **2026.05.25** via `./ending.sh`.
+Last updated on **2026.05.26** via `./ending.sh`.
 
 ### Recent Commits:
+- `dba2db6 chore: update slide audio files and sync segment timestamps in json`
 - `0a38611 Finalize pipeline governance updates and helper docs`
-- `6ae5c8c feat: update slide assets and synchronize audio timestamps for the presentation`

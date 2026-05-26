@@ -293,6 +293,7 @@ if [ ! -f ".project_setup" ]; then
     echo "🔗 正在斷開範本與重置 Git 倉庫..."
     rm -rf .git
     git init -b main
+    PUSH_BRANCH="main"
     
     # 5. 執行 workspace 重置 (Run cleanup)
     clean_workspace "$REPO_NAME"
@@ -312,16 +313,24 @@ if [ ! -f ".project_setup" ]; then
             echo "👉 請手動在 GitHub 上建立一個名為 '$REPO_NAME' 的空倉庫。"
             read -p "建立完成後，請按 Enter 鍵繼續..."
             git remote add origin "$REPO_URL"
+            REMOTE_HEAD_BRANCH="$(git ls-remote --symref origin HEAD 2>/dev/null | awk '/^ref:/ {sub("refs/heads/","",$2); print $2; exit}')"
+            if [ -n "$REMOTE_HEAD_BRANCH" ]; then
+                PUSH_BRANCH="$REMOTE_HEAD_BRANCH"
+            fi
             git add .
             git commit -m "Initial commit from template"
-            git push -u origin main --force
+            git push -u origin "HEAD:${PUSH_BRANCH}" --force
         fi
     else
         echo "✅ 該倉庫已存在於 GitHub。"
         git remote add origin "$REPO_URL"
+        REMOTE_HEAD_BRANCH="$(git ls-remote --symref origin HEAD 2>/dev/null | awk '/^ref:/ {sub("refs/heads/","",$2); print $2; exit}')"
+        if [ -n "$REMOTE_HEAD_BRANCH" ]; then
+            PUSH_BRANCH="$REMOTE_HEAD_BRANCH"
+        fi
         git add .
         git commit -m "Initial commit from template"
-        git push -u origin main --force
+        git push -u origin "HEAD:${PUSH_BRANCH}" --force
     fi
     
     # 7. 寫入初始化標記 (Write initialization marker)
@@ -352,7 +361,20 @@ echo ""
 echo "=============================="
 echo "Step 2: 拉取最新進度 (Git Pull)"
 echo "=============================="
-git pull origin main || echo "⚠️ 同步失敗，跳過此步驟。"
+DEFAULT_REMOTE_BRANCH="$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||')"
+if [ -z "$DEFAULT_REMOTE_BRANCH" ]; then
+    if git show-ref --verify --quiet refs/remotes/origin/main; then
+        DEFAULT_REMOTE_BRANCH="main"
+    elif git show-ref --verify --quiet refs/remotes/origin/master; then
+        DEFAULT_REMOTE_BRANCH="master"
+    fi
+fi
+
+if [ -n "$DEFAULT_REMOTE_BRANCH" ]; then
+    git pull origin "$DEFAULT_REMOTE_BRANCH" || echo "⚠️ 同步失敗，跳過此步驟。"
+else
+    echo "⚠️ 找不到遠端預設分支，跳過同步。"
+fi
 
 # =========================================================
 # Step 3: 閱讀開發日誌 (Read Dev Log)
@@ -368,6 +390,25 @@ else
 fi
 echo ""
 echo "🤖 嗨，AI 助手！請閱讀上方的開發日誌，並總結目前的進度，然後告訴我接下來可以開始哪些任務 (Tasks to start)。"
+
+# =========================================================
+# Step 3.5: Optional - Start Pipeline UI (FastAPI)
+# =========================================================
+if [[ "${PIPELINE_UI:-1}" == "1" ]]; then
+    echo ""
+    echo "=============================="
+    echo "Step 3.5: Start Pipeline UI (FastAPI)"
+    echo "=============================="
+    UI_PORT="${PIPELINE_UI_PORT:-8000}"
+    echo "Starting UI at http://127.0.0.1:${UI_PORT}"
+    echo "Tip: set PIPELINE_UI=0 to disable."
+    if command -v lsof >/dev/null 2>&1 && lsof -iTCP:"$UI_PORT" -sTCP:LISTEN >/dev/null 2>&1; then
+        echo "UI already running (port ${UI_PORT} is in use). Skipping start."
+    else
+        python3 -m uvicorn apps.pipeline_ui.app.main:app --host 127.0.0.1 --port "$UI_PORT" --reload >/tmp/pipeline_ui.log 2>&1 &
+        echo "Pipeline UI log: /tmp/pipeline_ui.log"
+    fi
+fi
 
 # =========================================================
 # Step 4: 啟動 AI CLI (Launch)

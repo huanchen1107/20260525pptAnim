@@ -1,0 +1,19 @@
+{
+  "run_id": "a90b1a8f5ebe475ab5a08bf2292ff9c4",
+  "project_id": "project-1",
+  "slide": "slide-1",
+  "step": "step:validate",
+  "status": "succeeded",
+  "started_at": 1779777598.084459,
+  "ended_at": 1779777598.121917,
+  "exit_code": 0,
+  "log_path": "/Users/huanchen/Desktop/2026 Projects/20260525pptAnim/.pipeline_ui/runs/a90b1a8f5ebe475ab5a08bf2292ff9c4/run.log",
+  "command": [
+    "bash",
+    "user/all-project-base/scripts/validate_slide_artifacts.sh",
+    "--project",
+    "/Users/huanchen/Desktop/2026 Projects/20260525pptAnim/user/project-1",
+    "--slide",
+    "1"
+  ]
+}

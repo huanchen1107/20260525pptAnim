@@ -1,0 +1,15 @@
+Slide: slide-4
+Narration: 未來工作
+
+Goal:
+- Communicate the main point clearly.
+
+Motion plan (default):
+- Start: clean canvas, then reveal title.
+- Middle: emphasize 1-2 key phrases.
+- End: subtle settle (no chaos).
+
+Specific suggestions:
+- Title: word-by-word reveal (1.5-2.5s).
+- Subtitle/caption: fade-up after title (0.6-1.2s).
+- Progress: fill across duration.

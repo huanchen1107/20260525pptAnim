@@ -1,0 +1,19 @@
+{
+  "run_id": "399221ff03aa47c29a5f1875efd35599",
+  "project_id": "project-1",
+  "slide": null,
+  "step": "step:split",
+  "status": "succeeded",
+  "started_at": 1779797479.327164,
+  "ended_at": 1779797617.6066282,
+  "exit_code": 0,
+  "log_path": "/Users/huanchen/Desktop/2026 Projects/20260525pptAnim/.pipeline_ui/runs/399221ff03aa47c29a5f1875efd35599/run.log",
+  "command": [
+    "bash",
+    "user/all-project-base/scripts/split_pages.sh",
+    "--project",
+    "/Users/huanchen/Desktop/2026 Projects/20260525pptAnim/user/project-1",
+    "--source-mode",
+    "tsx"
+  ]
+}

@@ -1,0 +1,15 @@
+Slide: slide-7
+Narration: 與分類,而恩則必須強勢宣告您的新方法如何突破平靜,而歐則是將這些資訊高度組織化。
+
+Goal:
+- Communicate the main point clearly.
+
+Motion plan (default):
+- Start: clean canvas, then reveal title.
+- Middle: emphasize 1-2 key phrases.
+- End: subtle settle (no chaos).
+
+Specific suggestions:
+- Title: word-by-word reveal (1.5-2.5s).
+- Subtitle/caption: fade-up after title (0.6-1.2s).
+- Progress: fill across duration.

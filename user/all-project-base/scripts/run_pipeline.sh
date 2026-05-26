@@ -20,11 +20,11 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ "$PIPELINE_MODE" == "auto" ]]; then
-  PIPELINE_MODE="preview"
+  PIPELINE_MODE="final"
   if [[ -n "$SLIDE_FILTER" ]]; then
-    echo "[auto] Running single-slide preview for ${PROJECT_ROOT} slide-${SLIDE_FILTER}"
+    echo "[auto] Running single-slide final for ${PROJECT_ROOT} slide-${SLIDE_FILTER}"
   else
-    echo "[auto] Running project preview for ${PROJECT_ROOT}"
+    echo "[auto] Running project final for ${PROJECT_ROOT}"
   fi
 fi
 
@@ -36,14 +36,18 @@ rm -f "$PROJECT_ROOT"/slides/slide-*-slide-*.png "$PROJECT_ROOT"/slides/slide-*-
 
 if [[ -n "$SLIDE_FILTER" ]]; then
   bash ./user/all-project-base/scripts/split_pages.sh --project "$PROJECT_ROOT" --source-mode "$SOURCE_MODE" --slide "$SLIDE_FILTER"
+  bash ./user/all-project-base/scripts/normalize_caption_txt.sh --project "$PROJECT_ROOT" --slide "$SLIDE_FILTER"
   bash ./user/all-project-base/scripts/convert_image_to_html.sh --project "$PROJECT_ROOT" --slide "$SLIDE_FILTER"
   bash ./user/all-project-base/scripts/generate_storyboard.sh --project "$PROJECT_ROOT" --slide "$SLIDE_FILTER" --no-prompt
   bash ./user/all-project-base/scripts/render_animation.sh --project "$PROJECT_ROOT" --renderer "$RENDERER" --mode "$PIPELINE_MODE" --slide "$SLIDE_FILTER"
+  bash ./user/all-project-base/scripts/generate_srt.sh --project "$PROJECT_ROOT" --slide "$SLIDE_FILTER"
 else
   bash ./user/all-project-base/scripts/split_pages.sh --project "$PROJECT_ROOT" --source-mode "$SOURCE_MODE"
+  bash ./user/all-project-base/scripts/normalize_caption_txt.sh --project "$PROJECT_ROOT"
   bash ./user/all-project-base/scripts/convert_image_to_html.sh --project "$PROJECT_ROOT"
   bash ./user/all-project-base/scripts/generate_storyboard.sh --project "$PROJECT_ROOT" --no-prompt
   bash ./user/all-project-base/scripts/render_animation.sh --project "$PROJECT_ROOT" --renderer "$RENDERER" --mode "$PIPELINE_MODE"
+  bash ./user/all-project-base/scripts/generate_srt.sh --project "$PROJECT_ROOT"
 fi
 
 if [[ "$PIPELINE_MODE" != "preview" && -z "$SLIDE_FILTER" ]]; then

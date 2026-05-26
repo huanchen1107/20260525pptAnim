@@ -1,0 +1,28 @@
+Storyboard abstract:
+- Existing actions: word_by_word, fade_up, progress_fill
+
+Narration (full):
+我們首先要面對一個殘酷的問題
+為什麼您的論文會遭到退稿呢?
+從資深神告委員的視角 PoC
+退稿通常不是因為單純的觀點差異
+而是整篇文章發生了系統編譯失敗
+這類制定錯誤保寒、模組A的動機缺失
+系統架構圖與數學公式的邏輯部品配
+或是與最先進技術的比較過於補弱
+最佳的解決方案就是掏用這套A導致的架構
+如同資深工程師…
+
+User ideas:
+Slide: slide-2
+Narration: 我們首先要面對一個殘酷的問題
+Goal:
+- Communicate the main point clearly.
+Motion plan (default):
+- Start: clean canvas, then reveal title.
+- Middle: emphasize 1-2 key phrases.
+- End: subtle settle (no chaos).
+Specific suggestions:
+- Title: word-by-word reveal (1.5-2.5s).
+- Subtitle/caption: fade-up after title (0.6-1.2s).
+- Progress: fill across duration.

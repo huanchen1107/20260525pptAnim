@@ -1,7 +1,41 @@
 slide: "slide-1"
 duration: "33.93"
 fps: 30
-caption: "各位學者與研究人員, 歡迎進入學術論文寫作全指南"
+caption: |
+  各位學者與研究人員, 歡迎進入學術論文寫作全指南
+  在今天的一程中, 我們將重述您對論文寫作的認知
+  經兵器論文寫作是一門藝術的傳統思維
+  從專業的角度來看, 這是一項嚴謹的系統工程
+  我們將導入一套從A到Z的完美夾告
+  將您的寫作流程正式升級為高階的真錯模式, D-Buck Mode
+  透過這套系統化的視角, 您將能精準掌控文章的每一個…
+idea: "Storyboard abstract:
+- Existing actions: progress_fill, zoom_in, pulse, font_red_pass, fade_up, font_red_pass
+
+Narration (full):
+各位學者與研究人員, 歡迎進入學術論文寫作全指南
+在今天的一程中, 我們將重述您對論文寫作的認知
+經兵器論文寫作是一門藝術的傳統思維
+從專業的角度來看, 這是一項嚴謹的系統工程
+我們將導入一套從A到Z的完美夾告
+將您的寫作流程正式升級為高階的真錯模式, D-Buck Mode
+透過這套系統化的視角, 您將能精準掌控文章的每一個…
+
+User ideas:
+Slide: slide-1
+Goal:
+- Communicate the main point clearly.
+Motion plan (default):
+- Start: clean canvas, then reveal title.
+- Middle: emphasize 1-2 key phrases.
+- End: subtle settle (no chaos).
+Specific suggestions:
+- Title: word-by-word reveal (1.5-2.5s).
+- Subtitle/caption: fade-up after title (3.0-6.0s).
+- Progress: fill across duration.
+-zoom in and out the title
+-write Haha..
+- write a pass at 10s in the screen middle with red color font"
 scenes:
   - id: intro
     start: 0.00
@@ -13,43 +47,13 @@ scenes:
     start: 4.20
     end: 33.93
 objects:
-  - id: title
-    at: 0.60
-    action: fade_in
-    duration: 0.60
-    intent: intro_reveal
-  - id: subtitle
-    at: 1.50
-    action: slide_in_up
-    duration: 0.60
-    intent: intro_reveal
-  - id: progress_fill
-    at: 2.40
-    action: fade_in
-    duration: 0.60
-    intent: intro_reveal
-  - id: global
+  - id: pass_text
     at: 10.00
-    action: micro_emphasis
-    duration: 0.40
-    intent: pacing_guard
-  - id: global
-    at: 15.00
-    action: micro_emphasis
-    duration: 0.40
-    intent: pacing_guard
-  - id: global
-    at: 20.00
-    action: micro_emphasis
-    duration: 0.40
-    intent: pacing_guard
-  - id: global
-    at: 25.00
-    action: micro_emphasis
-    duration: 0.40
-    intent: pacing_guard
-  - id: global
-    at: 30.00
-    action: micro_emphasis
-    duration: 0.40
-    intent: pacing_guard
+    action: font_red_pass
+    duration: 1.20
+    intent: red_font_pass
+  - id: main_image
+    at: 0.00
+    action: fade_in
+    duration: 0.80
+    intent: manual

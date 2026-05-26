@@ -1,0 +1,54 @@
+name: Minimal CI
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  shell-and-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg poppler-utils
+
+      - name: Shell syntax check
+        run: |
+          bash -n startup.sh
+          bash -n ending.sh
+          bash -n user/all-project-base/scripts/preflight_check.sh
+          bash -n user/all-project-base/scripts/split_pages.sh
+          bash -n user/all-project-base/scripts/convert_image_to_html.sh
+          bash -n user/all-project-base/scripts/generate_storyboard.sh
+          bash -n user/all-project-base/scripts/render_animation.sh
+          bash -n user/all-project-base/scripts/run_pipeline.sh
+          bash -n user/all-project-base/scripts/combine_videos.sh
+          bash -n user/all-project-base/scripts/validate_slide_artifacts.sh
+
+      - name: Pipeline smoke check (single slide, final, ffmpeg)
+        run: |
+          bash user/all-project-base/scripts/run_pipeline.sh \
+            --project user/project-1 \
+            --slide 1 \
+            --mode final \
+            --renderer ffmpeg
+
+      - name: Verify smoke output exists
+        run: |
+          test -f user/project-1/slides/slide-1.mp4

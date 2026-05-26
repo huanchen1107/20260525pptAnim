@@ -87,3 +87,13 @@ Run from repo root with project path passed as argument when supported.
 - When HyperFrames environment/version is inconsistent, use:
   - `user/all-project-base/scripts/setup_hyperframes_and_run.sh`
 - This script is the standard recovery entrypoint for install+version check+run in one flow.
+
+## Mandatory Self-Evaluation Rule (Storyboard vs Output)
+- Every important animation fix must include a self-evaluation before handoff.
+- The self-evaluation must compare **storyboard actions** vs **actual rendered result** for the same slide.
+- Required checklist:
+  - Verify generated HTML has required target IDs referenced by storyboard actions.
+  - Verify `slide-N-storyboard.yml` actions are within slide duration (no out-of-range timestamps).
+  - Verify rendered video behavior matches each key action (for example: title reveal, progress fill, pass marker).
+  - Explicitly list `Implemented` vs `Not implemented` actions and explain the reason.
+- If an action cannot be implemented because required assets are missing (for example `slide-N-audio.mp3`), this must be called out explicitly in the self-evaluation.

@@ -1,5 +1,107 @@
 # Development Log
 
+## 2026.05.26
+### Git Sync Branch Fix
+- Root cause: `startup.sh` Step 2 hardcoded `git pull origin main`, but repository default branch is `master`.
+- Fix: Step 2 now auto-detects remote default branch via `origin/HEAD`, with fallback checks for `origin/main` and `origin/master`.
+- Additional hardening: initialization push path in `startup.sh` no longer hardcodes `main`; it now resolves remote HEAD branch and pushes `HEAD:<detected-branch>`.
+- Verification: pull succeeds on this repo and no longer throws `fatal: couldn't find remote ref main`.
+
+### Slide Animation Pipeline Fix
+- Symptom: slide videos rendered without per-slide animation even though `slide-N-storyboard.yml` existed.
+- Root cause: render path generated storyboard files but did not consume them in runtime animation logic.
+- Fix 1 (`user/all-project-base/scripts/convert_image_to_html.sh`):
+  - Inject storyboard runtime into generated `slide-N.html`.
+  - Runtime now reads `slide-N-storyboard.yml`, parses object actions, and exposes `window.__hf = { duration, seek }` for deterministic HyperFrames rendering.
+- Fix 2 (`user/all-project-base/scripts/render_animation.sh`):
+  - Copy `slide-N-storyboard.yml` into the HyperFrames temp render directory so runtime fetch works during render.
+- Validation:
+  - Single-slide preview render succeeded: `slide-1.mp4` regenerated with storyboard-driven runtime.
+  - Full preview pipeline is running slide-by-slide with the updated adapter path.
+
+### Team Rule (Persistent)
+- Important fixes must be appended to this file (`log.md`) in the same session.
+- If a future session starts without context, read `README.md` and `log.md` first.
+
+### Minimal PR CI Added
+- Added `.github/workflows/minimal-ci.yml`.
+- Trigger: `pull_request` on `master` and `main`.
+- Checks:
+  - `bash -n` syntax validation for key shell scripts.
+  - Single-slide pipeline smoke test via `run_pipeline.sh --slide 1 --mode preview --renderer ffmpeg`.
+  - Output existence checks for `slide-1.mp4` and `slide-1.preview.mp4`.
+
+### OpenSpec Change 21 Created
+- Added `OpenSpec/openspec/changes/21-fastapi-video-editing-ui/`.
+- Created `proposal.md`, `design.md`, and `tasks.md`.
+- Scope includes FastAPI-based pipeline control UI and per-page storyboard idea text box + regenerate flow.
+
+### Change 21 Implementation Progress
+- Added FastAPI app scaffold under `apps/pipeline_ui/` with a lightweight UI and JSON APIs.
+- Added per-step pipeline controls (split/convert/storyboard/render/combine/validate) via `/api/pipeline/step/{step}`.
+- Storyboard idea files: `user/<project>/slides/slide-N-storyboard-idea.txt` (empty = default logic).
+- UI slides layout: thumbnail left; caption top-right; idea input bottom-right.
+
+### OpenSpec Change 22 Created
+- Added `OpenSpec/openspec/changes/22-storyboard-yaml-editor-ui/` for the next milestone:
+  - direct storyboard YAML editor + save/validate
+  - regenerate dry-run + diff review + apply
+  - single-slide render loop from UI
+
+### CI Design Notes Added
+- Added `docs/CI_NOTES.md` to capture Pipeline UI + storyboard contracts for CI/future sessions.
+ - Updated `docs/CI_NOTES.md` and `README.md` to reflect current defaults (final mode, UI auto-start, stepper + in-place result view).
+
+### Rule Update: Mandatory Animation Self-Evaluation
+- Added a new rule in `user/all-project-base/docs/pipeline-rules.md`:
+  - every important animation fix must include a storyboard-vs-output self-evaluation before handoff.
+  - the self-evaluation must report implemented vs not-implemented actions, validate target IDs/timestamps, and explain missing-asset constraints when present.
+
+### Animation + Pipeline UI Bugfix Consolidation
+- **Project panel UX fix**
+  - Moved `Target slide` selector from Slides panel to Project panel (next to `Refresh`) for single control point behavior.
+  - File: `apps/pipeline_ui/templates/index.html`
+
+- **Step 7 downloads range unification**
+  - Implemented single shared page-range selector for all 3 downloads (MP4/SRT/PDF).
+  - Added backend range parsing/filter support in deliverable endpoints.
+  - Files:
+    - `apps/pipeline_ui/static/app.js`
+    - `apps/pipeline_ui/app/routes/api.py`
+
+- **Slide-1 top white caption removal**
+  - Removed fallback top overlay caption/title rendering from generated slide HTML.
+  - Kept no-caption-in-video behavior; SRT remains separate deliverable.
+  - File: `user/all-project-base/scripts/convert_image_to_html.sh`
+
+- **Storyboard action survivability without title/subtitle**
+  - Root cause: when fallback HTML had no `title/subtitle` IDs, requested title actions had no valid target.
+  - Fix: add fallback visible motion on `main_image` (`zoom_in`, `pulse`) so animation remains visible in no-caption mode.
+  - File: `user/all-project-base/scripts/generate_storyboard.sh`
+
+- **PASS timing correctness**
+  - Added duration clamping for pass-related events to avoid out-of-range timestamps when slide duration is short/fallback.
+  - Ensured secondary pass action timestamp also clamps within duration window.
+  - File: `user/all-project-base/scripts/generate_storyboard.sh`
+
+- **Recovered missing slide-1 audio artifacts**
+  - Symptom: `slide-1-audio.mp3` missing caused duration fallback to 5s, breaking intended timeline.
+  - Recovery: reran split stage for slide-1 from `A2Z-original-audio.mp3`; restored `slide-1-audio.mp3` and `slide-1-audio.txt`.
+  - Command path: `user/all-project-base/scripts/split_pages.sh`
+
+- **HyperFrames render bind/permission fix**
+  - Symptom: `listen EPERM ... 0.0.0.0` during render.
+  - Fix: force render host to localhost via HyperFrames CLI `--host 127.0.0.1`.
+  - File: `user/all-project-base/scripts/render_animation.sh`
+
+- **Port 8000 reliability note**
+  - In this environment, `uvicorn --reload` may fail due watch permission constraints (`Operation not permitted`).
+  - Stable startup path: run uvicorn without `--reload` when needed and hard-refresh browser.
+
+- **Post-fix verification snapshot**
+  - `slide-1` re-render succeeded.
+  - `slide-1-audio.mp3` and `slide-1.mp4` durations both recovered to `33.432993s`.
+
 ## 2026.05.24
 ### Agent Skill Pack Pipeline
 - Added `pipeline.md` as the canonical artifact contract for the slide pipeline.
@@ -451,3 +553,140 @@
 - `2ad1f8a feat: Implement page animation rendering pipeline`
 - `6b2d667 chore: remove deleted work dir from index and update gitignore`
 - `5387cd1 docs: note hyperframes render blocker in 06 tasks`
+## 2026-05-26 — Slide-1 storyboard not visibly applied (fixed)
+
+- Root cause:
+  - Storyboard actions were technically consumed, but many mapped to subtle/unsupported visual behaviors, so output looked almost static.
+  - Default fallback HTML had weak visual contrast and empty subtitle, reducing perceived animation.
+
+- Changes made:
+  - `user/all-project-base/scripts/generate_storyboard.sh`
+    - Added strong canonical actions for key ids:
+      - `title` → `word_by_word` (intro)
+      - `subtitle` → `word_by_word` (after title)
+      - `progress_fill` → `progress_fill` across full slide duration
+      - `main_image` → `zoom_in`
+  - `user/all-project-base/scripts/render_animation.sh`
+    - Extended shim action support:
+      - Added `word_by_word`, `fade_up`, `slide_in_up`, `split_reveal`, `swap_focus`
+      - Kept deterministic `window.__hf.seek` behavior
+  - `user/all-project-base/scripts/convert_image_to_html.sh`
+    - Improved default slide scaffold for visibility:
+      - Stronger framing/outline/light-blue accent
+      - Subtitle now populated from 2nd transcript line when available
+      - Preserved ids (`title`, `subtitle`, `main_image`, `progress_fill`) for storyboard targeting
+
+- Verification (auto mode, self-test):
+  - Ran:
+    - `bash user/all-project-base/scripts/run_pipeline.sh --mode auto --project user/project-1 --slide 1`
+  - Confirmed `slide-1-storyboard.yml` now contains:
+    - `word_by_word` for title/subtitle
+    - long-duration `progress_fill`
+  - Extracted frame samples at 0.4s / 1.6s / 3.0s / 8.0s and confirmed visual deltas across timeline.
+## 2026-05-26 — Fix HyperFrames `listen EPERM 0.0.0.0` in restricted env
+
+- Symptom:
+  - `render_animation.sh` sometimes failed with:
+    - `Error: listen EPERM: operation not permitted 0.0.0.0`
+
+- Root cause:
+  - HyperFrames CLI server bind used `server.listen(port)` (default host `0.0.0.0`), which is blocked in some sandbox/restricted environments.
+
+- Fix:
+  - Patched local HyperFrames CLI runtime to bind localhost explicitly:
+    - `node_modules/hyperframes/dist/cli.js`
+      - `server.listen(port)` → `server.listen({ port, host: "127.0.0.1" })`
+      - applied at both server startup call sites.
+
+- Verification:
+  - Ran without escalation:
+    - `bash user/all-project-base/scripts/render_animation.sh --project user/project-1 --slide 1 --mode final`
+  - Result:
+    - `Rendered user/project-1/slides/slide-1.mp4`
+
+## 2026.05.26 (工作階段自動摘要)
+> **本工作階段由 ./ending.sh 自動觸發生成備份**
+
+### 📂 變更檔案清單
+- `M README.md`
+- ` M log.md`
+- ` M startup.sh`
+- ` M user/all-project-base/docs/pipeline-rules.md`
+- ` M user/all-project-base/scripts/convert_image_to_html.sh`
+- ` M user/all-project-base/scripts/generate_storyboard.sh`
+- ` M user/all-project-base/scripts/render_animation.sh`
+- ` M user/all-project-base/scripts/run_pipeline.sh`
+- ` M user/project-1/slides/slide-1-audio.txt`
+- ` M user/project-1/slides/slide-1-storyboard.yml`
+- ` M user/project-1/slides/slide-1.html`
+- ` M user/project-1/slides/slide-1.mp4`
+- ` M user/project-1/slides/slide-1.preview.mp4`
+- ` M user/project-1/slides/slide-10.html`
+- ` M user/project-1/slides/slide-10.mp4`
+- ` M user/project-1/slides/slide-10.preview.mp4`
+- ` M user/project-1/slides/slide-11.html`
+- ` M user/project-1/slides/slide-11.mp4`
+- ` M user/project-1/slides/slide-11.preview.mp4`
+- ` M user/project-1/slides/slide-12.html`
+- ` M user/project-1/slides/slide-12.mp4`
+- ` M user/project-1/slides/slide-12.preview.mp4`
+- ` M user/project-1/slides/slide-13.html`
+- ` M user/project-1/slides/slide-13.mp4`
+- ` M user/project-1/slides/slide-13.preview.mp4`
+- ` M user/project-1/slides/slide-2-audio.txt`
+- ` M user/project-1/slides/slide-2-storyboard.yml`
+- ` M user/project-1/slides/slide-2.html`
+- ` M user/project-1/slides/slide-2.mp4`
+- ` M user/project-1/slides/slide-2.preview.mp4`
+- ` M user/project-1/slides/slide-3.html`
+- ` M user/project-1/slides/slide-3.mp4`
+- ` M user/project-1/slides/slide-3.preview.mp4`
+- ` M user/project-1/slides/slide-4.html`
+- ` M user/project-1/slides/slide-4.mp4`
+- ` M user/project-1/slides/slide-4.preview.mp4`
+- ` M user/project-1/slides/slide-5.html`
+- ` M user/project-1/slides/slide-5.mp4`
+- ` M user/project-1/slides/slide-5.preview.mp4`
+- ` M user/project-1/slides/slide-6.html`
+- ` M user/project-1/slides/slide-6.mp4`
+- ` M user/project-1/slides/slide-6.preview.mp4`
+- ` M user/project-1/slides/slide-7.html`
+- ` M user/project-1/slides/slide-7.mp4`
+- ` M user/project-1/slides/slide-7.preview.mp4`
+- ` M user/project-1/slides/slide-8.html`
+- ` M user/project-1/slides/slide-8.mp4`
+- ` M user/project-1/slides/slide-8.preview.mp4`
+- ` M user/project-1/slides/slide-9.html`
+- ` M user/project-1/slides/slide-9.mp4`
+- ` M user/project-1/slides/slide-9.preview.mp4`
+- ` M user/project-1/slides/timestamps.json`
+- `?? .github/workflows/minimal-ci.yml`
+- `?? .pipeline_ui/`
+- `?? OpenSpec/openspec/changes/21-fastapi-video-editing-ui/`
+- `?? OpenSpec/openspec/changes/22-storyboard-yaml-editor-ui/`
+- `?? OpenSpec/openspec/changes/23-object-pick-and-focus/`
+- `?? apps/`
+- `?? docs/`
+- `?? user/all-project-base/scripts/generate_srt.sh`
+- `?? user/all-project-base/scripts/normalize_caption_txt.sh`
+- `?? user/project-1/slides/.render-slide-1-debug/`
+- `?? user/project-1/slides/slide-1-storyboard-idea.txt`
+- `?? user/project-1/slides/slide-1.srt`
+- `?? user/project-1/slides/slide-10-storyboard-idea.txt`
+- `?? user/project-1/slides/slide-11-storyboard-idea.txt`
+- `?? user/project-1/slides/slide-12-storyboard-idea.txt`
+- `?? user/project-1/slides/slide-13-storyboard-idea.txt`
+- `?? user/project-1/slides/slide-2-storyboard-idea.txt`
+- `?? user/project-1/slides/slide-3-storyboard-idea.txt`
+- `?? user/project-1/slides/slide-4-storyboard-idea.txt`
+- `?? user/project-1/slides/slide-5-storyboard-idea.txt`
+- `?? user/project-1/slides/slide-6-storyboard-idea.txt`
+- `?? user/project-1/slides/slide-7-storyboard-idea.txt`
+- `?? user/project-1/slides/slide-8-storyboard-idea.txt`
+- `?? user/project-1/slides/slide-9-storyboard-idea.txt`
+- `?? user/project-1/slides/timeline.json`
+
+### 📦 近期 Git 提交紀錄
+- `dba2db6 chore: update slide audio files and sync segment timestamps in json`
+- `0a38611 Finalize pipeline governance updates and helper docs`
+- `6ae5c8c feat: update slide assets and synchronize audio timestamps for the presentation`
